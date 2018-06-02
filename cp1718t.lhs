@@ -987,10 +987,32 @@ anaBlockchain g = inBlockchain . recBlockchain (anaBlockchain g) . g
 
 hyloBlockchain h g = cataBlockchain h . anaBlockchain g
 
-allTransactions = cataBlockchain g
-				where g = either (p2.p2) (conc . (p2.p2 >< id))
 
-ledger = undefined
+
+
+
+allTransactions = cataBlockchain g
+                where g = either (p2.p2) (conc . (p2.p2 >< id))
+
+
+
+sT = uncurry somaTrans
+somaTrans :: Transaction -> Ledger -> Ledger
+somaTrans (a,(b,c)) l = somaValor (a,-b) (somaValor (c,b) l)
+
+
+somaValor :: (Entity, Value) -> Ledger -> Ledger
+somaValor a l =  if isNothing(look (p1 a) l)    then a:l
+                                                else replacePair a l
+
+replacePair :: (Eq a, Num b) => (a,b) -> [(a,b)] -> [(a,b)]
+replacePair a [] = []
+replacePair (a,b) ((x,y):t) = if a == x then (a, b + y):t
+                                        else (x,y):replacePair (a,b) t
+
+ledger = (cataList (either nil sT)) . allTransactions
+
+
 isValidMagicNr = undefined
 \end{code}
 
