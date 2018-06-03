@@ -1013,10 +1013,14 @@ replacePair (a,b) ((x,y):t) = if a == x then (a, b + y):t
 ledger = (cataList (either nil sT)) . allTransactions
 
 
-isValidMagicNr = undefined
+el = uncurry elem
+e  = uncurry (&&)
+isValidMagicNr = pim . pam . pum
+                 where pum = cataBlockchain (either (cons . split p1 nil) (cons . (p1 >< id)))
+                       pam = anaList ((id -|- (split (not . el) p2)).outList)
+                       pim = cataList (either true e)
+
 \end{code}
-
-
 \subsection*{Problema 2}
 
 \begin{code}
