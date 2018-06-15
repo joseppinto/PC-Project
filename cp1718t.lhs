@@ -1024,22 +1024,36 @@ isValidMagicNr = pim . pam . pum
 \subsection*{Problema 2}
 
 \begin{code}
-inQTree = undefined
-outQTree = undefined
-baseQTree = undefined
-recQTree = undefined
-cataQTree = undefined
-anaQTree = undefined
-hyloQTree = undefined
+
+aux1 (a,(b,c)) = Cell a b c
+aux2 (a,(b,(c,d))) = Block a b c d
+inQTree = either aux1 aux2
+outQTree (Cell a b c) = i1 (a,(b,c))
+outQTree (Block a b c d) = i2 (a,(b,(c,d)))
+baseQTree g f = (g><id) -|-  (f >< (f >< (f >< f)))
+recQTree f = baseQTree id f
+cataQTree g = g . (recQTree (cataQTree g)) . outQTree
+anaQTree f = inQTree . (recQTree (anaQTree f)) . f
+hyloQTree a c = cataQTree a . anaQTree c
+
+node2p g f = (id><g) -|-  (f >< (f >< (f >< f)))
+
+exe = Block (Cell 0 2 2) (Cell 0 2 2) (Cell 1 2 2) (Block (Cell 1 1 1) (Cell 0 1 1) (Cell 0 1 1) (Cell 0 1 1))
 
 instance Functor QTree where
-    fmap = undefined
+    fmap f = cataQTree (inQTree . baseQTree f id)
 
-rotateQTree = undefined
-scaleQTree = undefined
-invertQTree = undefined
+rotateaux (a,(b,(c,d))) = (c,(a,(d,b)))
+rotateQTree = cataQTree (inQTree . ((id><swap) -|- rotateaux))
+
+scaleQTree tam = cataQTree (inQTree . node2p size id) where size = (*tam)><(*tam)
+
+invcor (PixelRGBA8 a b c d) = PixelRGBA8 (255-a) (255-b) (255-c) d
+invertQTree = cataQTree (inQTree . baseQTree invcor id)
+
 compressQTree = undefined
-outlineQTree = undefined
+
+outlineQTree f = qt2bm . cataQTree (inQTree . baseQTree f id)
 \end{code}
 
 \subsection*{Problema 3}
