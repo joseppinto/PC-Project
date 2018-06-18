@@ -1098,13 +1098,16 @@ loop = undefined
 \subsection*{Problema 4}
 
 \begin{code}
-inFTree = undefined
-outFTree = undefined
-baseFTree = undefined
-recFTree = undefined
-cataFTree = undefined
-anaFTree = undefined
-hyloFTree = undefined
+ftreeunit b = Unit b
+ftreeComp (a,(b,c)) = Comp a b c
+inFTree = either ftreeunit ftreeComp
+outFTree (Unit b) = i1 b
+outFTree (Comp a b c) = i2 (a,(b,c))
+baseFTree g f k = f -|- (g><(k><k))
+recFTree f = baseFTree id id f
+cataFTree g = g . (recFTree  (cataFTree g)) . outFTree
+anaFTree  f = inFTree . (recFTree (anaFTree f)) . f
+hyloFTree a c = cataFTree a . anaFTree c
 
 instance Bifunctor FTree where
     bimap = undefined
