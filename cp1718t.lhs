@@ -1040,6 +1040,8 @@ node2p g f = (id><g) -|-  (f >< (f >< (f >< f)))
 
 exe = Block (Cell 0 2 2) (Cell 0 2 2) (Cell 1 2 2) (Block (Cell 1 1 1) (Cell 0 1 1) (Cell 0 1 1) (Cell 0 1 1))
 
+exe2 = Block (Cell 0 4 4) (Block (Cell 0 2 2) (Cell 0 2 2) (Cell 1 2 2) (Block (Cell 1 1 1) (Cell 0 1 1) (Cell 0 1 1) (Cell 0 1 1))) (Cell 1 4 4) (Block (Cell 1 2 2) (Cell 0 2 2) (Cell 0 2 2) (Block (Cell 0 1 1) (Cell 0 1 1) (Cell 0 1 1) (Cell 1 1 1)))
+
 instance Functor QTree where
     fmap f = cataQTree (inQTree . baseQTree f id)
 
@@ -1051,9 +1053,39 @@ scaleQTree tam = cataQTree (inQTree . node2p size id) where size = (*tam)><(*tam
 invcor (PixelRGBA8 a b c d) = PixelRGBA8 (255-a) (255-b) (255-c) d
 invertQTree = cataQTree (inQTree . baseQTree invcor id)
 
-compressQTree = undefined
+cataQTreeN n = cut n . (recQTree (cataQTreeN n1)) . outQTree
+              where n1 = if (n > 0) then n - 1 else n
+                    cut n = inQTree . ((id><id) -|- f n)
 
-outlineQTree f = qt2bm . cataQTree (inQTree . baseQTree f id)
+compressQTree n tree = cataQTreeN (depthQTree tree - n) tree
+
+
+f n (a,(b,(c,d))) = let list = [a,b,c,d]
+                        (a1:a2:a3:a4:[]) = map (transfor n) list
+                    in (a1,(a2,(a3,a4)))
+
+
+transfor n (Cell a b c) = Cell a b c
+transfor n a = if (n == 0) then Cell na (fst size) (snd size) else a
+            where na = fst (maxsize a)
+                  size = sizeQTree a
+
+
+mymax :: [(a,(Int,Int))] -> (a,(Int,Int))
+mymax [x] = x
+mymax (h1:h2:t) = let a1 = snd h1
+                      a = fst a1 * snd a1
+                      b1 = snd h2
+                      b = fst b1 * snd b1
+                  in if (a > b)
+                      then mymax (h1:t)
+                      else mymax (h2:t)
+
+maxsize :: QTree a -> (a,(Int,Int))
+maxsize = cataQTree (either id f)
+       where f (a,(b,(c,d))) = mymax [a,b,c,d]
+
+outlineQTree f = qt2bm . cataQTree (inQTree . baseQTree f id) -- passa nos testes mas tem que ser melhorada
 \end{code}
 
 \subsection*{Problema 3}
@@ -1341,7 +1373,7 @@ invertBMP from to = withBMP from to invertbm
 
 depthQTree :: QTree a -> Int
 depthQTree = cataQTree (either (const 0) f)
-    where f (a,(b,(c,d))) = maximum [a,b,c,d]
+    where f (a,(b,(c,d))) = 1 + maximum [a,b,c,d]
 
 compressbm :: Eq a => Int -> Matrix a -> Matrix a
 compressbm n = qt2bm . compressQTree n . bm2qt
