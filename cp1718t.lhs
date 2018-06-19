@@ -660,7 +660,7 @@ g 0 = 1
 g (d+1) = underbrace ((d+1)) (s d) * g d
 
 s 0 = 1
-s (d+1) = s n + 1
+s (d+1) = s d + 1
 \end{spec}
 A partir daqui alguém derivou a seguinte implementação:
 \begin{code}
@@ -1085,7 +1085,19 @@ maxsize :: QTree a -> (a,(Int,Int))
 maxsize = cataQTree (either id f)
        where f (a,(b,(c,d))) = mymax [a,b,c,d]
 
-outlineQTree f = qt2bm . cataQTree (inQTree . baseQTree f id) -- passa nos testes mas tem que ser melhorada
+proof a = True
+
+matrixtrns :: Matrix Bool -> Matrix Bool
+matrixtrns a = let (nrow,ncol) = split nrows ncols a
+                   cols = mapCol (\_ x -> proof x) 1 (mapCol (\_ x -> proof x) ncol a)
+                   rows = mapRow (\_ x -> proof x) 1 (mapRow (\_ x -> proof x) nrow cols)
+               in rows
+
+checkvalue :: Either (Bool,(Int,Int)) (QTree Bool,(QTree Bool,(QTree Bool,QTree Bool))) -> Either (Bool,(Int,Int)) (QTree Bool,(QTree Bool,(QTree Bool,QTree Bool)))
+checkvalue (Left (a,(b,c))) = if (a == True) then outQTree (bm2qt (matrixtrns (qt2bm (Cell False b c)))) else Left (a,(b,c))
+checkvalue (Right (a,(b,(c,d)))) = (Right (a,(b,(c,d))))
+
+outlineQTree f = qt2bm . cataQTree (inQTree . checkvalue) . cataQTree (inQTree . baseQTree f id)
 \end{code}
 
 \subsection*{Problema 3}
@@ -1110,7 +1122,7 @@ anaFTree  f = inFTree . (recFTree (anaFTree f)) . f
 hyloFTree a c = cataFTree a . anaFTree c
 
 instance Bifunctor FTree where
-    bimap = undefined
+    bimap g f = cataFTree (inFTree . baseFTree g f id)
 
 generatePTree = undefined
 drawPTree = undefined
