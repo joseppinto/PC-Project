@@ -1129,7 +1129,8 @@ criaPita (a,b) = i2 (a,((a*razao,nb),(a*razao,nb))) where nb = pred b
                                                           razao = sqrt(2)/2
 
 
-generatePTree n = anaFTree criaPita (20.0,n)
+generatePTree = anaFTree criaPita . initype
+             where initype = split (const 20.0) id
 --falta fazer o rotate à imagem e consiguir meter a reproduzir
 criaFRPic :: ((Bool,Float,(Float,Float)),FTree Float Float) -> Either Picture (Picture,(((Bool,Float,(Float,Float)),FTree Float Float),((Bool,Float,(Float,Float)),FTree Float Float)))
 criaFRPic ((s,a,(x,y)),Unit b) = i1 (translate x y (rectangleSolid b b))
