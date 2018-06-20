@@ -184,6 +184,7 @@ import System.Random  hiding (split)
 import GHC.IO.Exception
 import Codec.Picture.Types
 import Graphics.Gloss
+import Graphics.Gloss.Data.Vector
 import Control.Monad
 import Control.Applicative hiding ((<|>))
 \end{code}
@@ -1038,10 +1039,6 @@ hyloQTree a c = cataQTree a . anaQTree c
 
 node2p g f = (id><g) -|-  (f >< (f >< (f >< f)))
 
-exe = Block (Cell 0 2 2) (Cell 0 2 2) (Cell 1 2 2) (Block (Cell 1 1 1) (Cell 0 1 1) (Cell 0 1 1) (Cell 0 1 1))
-
-exe2 = Block (Cell 0 4 4) (Block (Cell 0 2 2) (Cell 0 2 2) (Cell 1 2 2) (Block (Cell 1 1 1) (Cell 0 1 1) (Cell 0 1 1) (Cell 0 1 1))) (Cell 1 4 4) (Block (Cell 1 2 2) (Cell 0 2 2) (Cell 0 2 2) (Block (Cell 0 1 1) (Cell 0 1 1) (Cell 0 1 1) (Cell 1 1 1)))
-
 instance Functor QTree where
     fmap f = cataQTree (inQTree . baseQTree f id)
 
@@ -1053,22 +1050,22 @@ scaleQTree tam = cataQTree (inQTree . node2p size id) where size = (*tam)><(*tam
 invcor (PixelRGBA8 a b c d) = PixelRGBA8 (255-a) (255-b) (255-c) d
 invertQTree = cataQTree (inQTree . baseQTree invcor id)
 
-cataQTreeN n = cut n . (recQTree (cataQTreeN n1)) . outQTree
-              where n1 = if (n > 0) then n - 1 else n
-                    cut n = inQTree . ((id><id) -|- f n)
 
-compressQTree n tree = cataQTreeN (depthQTree tree - n) tree
+compressQTree n tree = anaQTree transformaTree (nn n,tree)
+                    where h = depthQTree tree
+                          nn = cond (>h) (const 0) (const (h-n))
+
+transformaTree :: (Int,QTree a) -> Either (a,(Int,Int)) ((Int,QTree a),((Int,QTree a),((Int,QTree a),(Int,QTree a))))
+transformaTree (_, Cell a b c) = i1 (a,(b,c))
+transformaTree (0, a) = i1 (b,(d,c)) where (Cell b d c) = transfor a
+transformaTree (size, Block a b c d) = let nsize = size - 1
+                                       in i2 ((nsize,a),((nsize,b),((nsize,c),(nsize,d))))
 
 
-f n (a,(b,(c,d))) = let list = [a,b,c,d]
-                        (a1:a2:a3:a4:[]) = map (transfor n) list
-                    in (a1,(a2,(a3,a4)))
-
-
-transfor n (Cell a b c) = Cell a b c
-transfor n a = if (n == 0) then Cell na (fst size) (snd size) else a
-            where na = fst (maxsize a)
-                  size = sizeQTree a
+transfor (Cell a b c) = Cell a b c
+transfor a = Cell na (fst size) (snd size)
+          where na = fst (maxsize a)
+                size = sizeQTree a
 
 
 mymax :: [(a,(Int,Int))] -> (a,(Int,Int))
@@ -1085,19 +1082,20 @@ maxsize :: QTree a -> (a,(Int,Int))
 maxsize = cataQTree (either id f)
        where f (a,(b,(c,d))) = mymax [a,b,c,d]
 
-proof a = True
 
 matrixtrns :: Matrix Bool -> Matrix Bool
 matrixtrns a = let (nrow,ncol) = split nrows ncols a
-                   cols = mapCol (\_ x -> proof x) 1 (mapCol (\_ x -> proof x) ncol a)
-                   rows = mapRow (\_ x -> proof x) 1 (mapRow (\_ x -> proof x) nrow cols)
+                   cols = mapCol (\_ x -> True) 1 (mapCol (\_ x -> True) ncol a)
+                   rows = mapRow (\_ x -> True) 1 (mapRow (\_ x -> True) nrow cols)
                in rows
 
-checkvalue :: Either (Bool,(Int,Int)) (QTree Bool,(QTree Bool,(QTree Bool,QTree Bool))) -> Either (Bool,(Int,Int)) (QTree Bool,(QTree Bool,(QTree Bool,QTree Bool)))
-checkvalue (Left (a,(b,c))) = if (a == True) then outQTree (bm2qt (matrixtrns (qt2bm (Cell False b c)))) else Left (a,(b,c))
-checkvalue (Right (a,(b,(c,d)))) = (Right (a,(b,(c,d))))
 
-outlineQTree f = qt2bm . cataQTree (inQTree . checkvalue) . cataQTree (inQTree . baseQTree f id)
+swapTreeLines = cond typecheck h id
+             where h = cond (\(Left (a,(b,c))) -> a==True) (outQTree . bm2qt . matrixtrns . qt2bm . swapcel . inQTree) id
+                   swapcel (Cell a b c) = Cell False b c
+                   typecheck = either (const True) (const False)
+
+outlineQTree f = qt2bm . cataQTree (inQTree . swapTreeLines) . cataQTree (inQTree . baseQTree f id)
 \end{code}
 
 \subsection*{Problema 3}
@@ -1124,8 +1122,36 @@ hyloFTree a c = cataFTree a . anaFTree c
 instance Bifunctor FTree where
     bimap g f = cataFTree (inFTree . baseFTree g f id)
 
-generatePTree = undefined
-drawPTree = undefined
+
+criaPita :: (Square,Int) -> Either Square (Square,((Square,Int),(Square,Int)))
+criaPita (a,0) = i1 (a)
+criaPita (a,b) = i2 (a,((a*razao,nb),(a*razao,nb))) where nb = pred b
+                                                          razao = sqrt(2)/2
+
+
+generatePTree n = anaFTree criaPita (20.0,n)
+--falta fazer o rotate à imagem e consiguir meter a reproduzir
+criaFRPic :: ((Bool,Float,(Float,Float)),FTree Float Float) -> Either Picture (Picture,(((Bool,Float,(Float,Float)),FTree Float Float),((Bool,Float,(Float,Float)),FTree Float Float)))
+criaFRPic ((s,a,(x,y)),Unit b) = i1 (translate x y (rectangleSolid b b))
+criaFRPic ((s,a,(x,y)),Comp size f1 f2) = i2 (translate x y (rectangleSolid size size),(b,c))
+                where vd = rotateV a (split (/2) id size)
+                      ve = rotateV a (split ((negate).(/2)) id size)
+                      ang = atan 2
+                      na = (ang + a, a - ang)
+                      b = ((not s,fst na,(x+fst ve,y+snd ve)), f1)
+                      c = ((not s,snd na,(x+fst vd,y+snd vd)), f2)
+
+teste2 (Unit b) = i1 (rectangleSolid 10.0 10.0)
+teste2 (Comp a b c) = i2 ((rectangleSolid 10.0 10.0),(b,c))
+
+
+ftreetoList :: FTree a a -> [a]
+ftreetoList = cataFTree (either singl h)
+          where h(a,(b,c)) = [a] ++ b ++ c
+
+drawPTree = hyloFTree (either singl h) (criaFRPic) . initype
+         where h(a,(b,c)) = [a] ++ b ++ c
+               initype a = ((False,0,(0,0)),a)
 \end{code}
 
 \subsection*{Problema 5}
