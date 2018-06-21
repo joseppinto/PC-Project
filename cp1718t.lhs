@@ -674,7 +674,7 @@ derive as funções |base k| e |loop| que são usadas como auxiliares acima.
 \begin{propriedade}
 Verificação que |bin n k| coincide com a sua especificação (\ref{eq:bin}):
 \begin{code}
-prop3 n k = (bin n k) == (fac n) % (fac k * (fac ((n-k))))
+prop3 (NonNegative n) (NonNegative k) = k <= n ==> (bin n k) == (fac n) % (fac k * (fac ((n-k))))
 \end{code}
 \end{propriedade}
 
@@ -1064,7 +1064,7 @@ transformaTree (size, Block a b c d) = let nsize = size - 1
 
 transfor (Cell a b c) = Cell a b c
 transfor a = Cell na (fst size) (snd size)
-          where na = fst (maxsize a)
+          where na = fst $ maxsize a
                 size = sizeQTree a
 
 
@@ -1124,13 +1124,13 @@ instance Bifunctor FTree where
     bimap g f = cataFTree (inFTree . baseFTree g f id)
 
 
-criaPita :: (Square,Int) -> Either Square (Square,((Square,Int),(Square,Int)))
-criaPita (a,0) = i1 (a)
-criaPita (a,b) = i2 (a,((a*razao,nb),(a*razao,nb))) where nb = pred b
-                                                          razao = sqrt(2)/2
+criaPitagoras :: (Square,Int) -> Either Square (Square,((Square,Int),(Square,Int)))
+criaPitagoras (a,0) = i1 (a)
+criaPitagoras (a,b) = i2 (a,((a*razao,nb),(a*razao,nb))) where nb = pred b
+                                                               razao = sqrt(2)/2
 
 
-generatePTree = anaFTree criaPita . initype
+generatePTree = anaFTree criaPitagoras . initype
              where initype = split (const 10.0) id
 
 
@@ -1149,13 +1149,6 @@ createImage = cond (fst) rot nrot
            where rot (_,(size,(x,y))) = translate x y (rotate (45.0) (rectangleSolid size size))
                  nrot (_,(size,(x,y))) = translate x y (rectangleSolid size size)
 
-
-{-|
-drawPTree = hyloFTree (either singl h) (criaFRPic) . initype
-         where h(a,(b,c)) = [a] ++ b ++ c
-               initype a = ((False,0,(0,0)),a)
-|-}
-
 loopAna :: [[a]] -> [[a]]
 loopAna [] = []
 loopAna [x] = [x]
@@ -1163,39 +1156,23 @@ loopAna (h:t) = h : loopAna ((h++a) : tail t)
              where a = head t
 
 
-breadthFirst = fmap (pictures) . loopAna
-
 meteAlt :: (Int, FTree a b) -> Either (b,Int) ((a,Int),((Int, FTree a b),(Int, FTree a b)))
 meteAlt (x, Unit b) = i1 (b,x)
 meteAlt (x, Comp a f1 f2) = i2 ((a,x),((x-1,f1),(x-1,f2)))
+
+filterList :: [(a,Int)] -> Either [a] ([a],[(a,Int)])
+filterList [] = i1 []
+filterList t  = i2 (f1 t,f2 t) where f1 = map (p1) . filter (\k -> p2 k == alt)
+                                     alt = p2 (head t)
+                                     f2 = filter (\k -> p2 k /= alt)
+
+breadthFirst = fmap (pictures) . loopAna
 
 drawPTree = breadthFirst . anaList filterList . hyloFTree (either singl b) (meteAlt) . h
      where h = split (const 0) k
            b(a,(b,c)) = [a] ++ b ++ c
            k = anaFTree (criaFRPic) . initype
            initype a = ((False,0,(0,0)),a)
-
-filterList :: [(Picture,Int)] -> Either [Picture] ([Picture],[(Picture,Int)])
-filterList [] = i1 []
-filterList t  = i2 (f1,f2) where f1 = fmap (p1) (filter (\k -> p2 k == alt) t)
-                                 alt = p2 (head t)
-                                 f2 = filter (\k -> p2 k /= alt) t
-{-|
-tota :: Int -> [a] -> [a]
-tota _ [] = []
-tota 0 _ = []
-tota x (h:t) = h : tota (x-1) t
-
-main :: IO ()
-main = do ni <- getLine
-          let n = read ni :: Int
-          let pics = drawPTree (generatePTree (n))
-          let img t = pictures (tota (floor (t/2)) pics)
-          let jar = (InWindow "Test" (800,800) (0,0))
-          animate jar
-                  white
-                  img
-|-}
 
 main :: IO()
 main = do ni <- getLine
@@ -1207,9 +1184,25 @@ main = do ni <- getLine
 \subsection*{Problema 5}
 
 \begin{code}
-singletonbag = undefined
-muB = undefined
-dist = undefined
+singletonbag x = B [(x,1)]
+
+muB = B. juntaBag . unB . fmap unB
+
+transforBagBagList :: [ ( [(t,Int)], Int) ] -> Either [ [(t,Int)] ] ( [(t,Int)], [ ([(t,Int)],Int) ])
+transforBagBagList [] = i1 []
+transforBagBagList list = i2 (ele,tail list)
+                       where (listmod,x) = head list
+                             ele = map (id><(*x)) listmod
+
+juntaBag = hyloList (either nil h) transforBagBagList
+        where h (a,b) = a ++ b
+
+
+dist b = D list
+      where size = sum . map p2 $ unB b
+            list = fmap (id><odds) $ unB b
+            odds x = toFloat x / toFloat size
+
 \end{code}
 
 \section{Como exprimir cálculos e diagramas em LaTeX/lhs2tex}
