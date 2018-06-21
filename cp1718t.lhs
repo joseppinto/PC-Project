@@ -1086,7 +1086,7 @@ maxsize = cataQTree (either id f)
 matrixtrns :: Matrix Bool -> Matrix Bool
 matrixtrns a = let (nrow,ncol) = split nrows ncols a
                    cols = mapCol (\_ x -> True) 1 (mapCol (\_ x -> True) ncol a)
-                   rows = mapRow (\_ x -> True) 1 (mapRow (\_ x -> True) nrow cols)
+                   rows = mapRow (\_ x -> True) 1 (mapRow (\_ x -> True) nrow a)
                in rows
 
 
@@ -1094,6 +1094,7 @@ swapTreeLines = cond typecheck h id
              where h = cond (\(Left (a,(b,c))) -> a==True) (outQTree . bm2qt . matrixtrns . qt2bm . swapcel . inQTree) id
                    swapcel (Cell a b c) = Cell False b c
                    typecheck = either (const True) (const False)
+
 
 outlineQTree f = qt2bm . cataQTree (inQTree . swapTreeLines) . cataQTree (inQTree . baseQTree f id)
 \end{code}
@@ -1130,29 +1131,48 @@ criaPita (a,b) = i2 (a,((a*razao,nb),(a*razao,nb))) where nb = pred b
 
 
 generatePTree = anaFTree criaPita . initype
-             where initype = split (const 20.0) id
---falta fazer o rotate à imagem e consiguir meter a reproduzir
+             where initype = split (const 100.0) id
+
+
 criaFRPic :: ((Bool,Float,(Float,Float)),FTree Float Float) -> Either Picture (Picture,(((Bool,Float,(Float,Float)),FTree Float Float),((Bool,Float,(Float,Float)),FTree Float Float)))
-criaFRPic ((s,a,(x,y)),Unit b) = i1 (translate x y (rectangleSolid b b))
-criaFRPic ((s,a,(x,y)),Comp size f1 f2) = i2 (translate x y (rectangleSolid size size),(b,c))
+criaFRPic ((s,a,(x,y)),Unit b) = i1 (createImage (s,(b,(x,y))))
+criaFRPic ((s,a,(x,y)),Comp size f1 f2) = i2 (createImage (s,(size,(x,y))),(b,c))
                 where vd = rotateV a (split (/2) id size)
                       ve = rotateV a (split ((negate).(/2)) id size)
-                      ang = atan 2
+                      ang = atan 1
                       na = (ang + a, a - ang)
                       b = ((not s,fst na,(x+fst ve,y+snd ve)), f1)
                       c = ((not s,snd na,(x+fst vd,y+snd vd)), f2)
 
-teste2 (Unit b) = i1 (rectangleSolid 10.0 10.0)
-teste2 (Comp a b c) = i2 ((rectangleSolid 10.0 10.0),(b,c))
+createImage :: (Bool,(Float,(Float,Float))) -> Picture
+createImage = cond (fst) rot nrot
+           where rot (_,(size,(x,y))) = translate x y (rotate (45.0) (rectangleSolid size size))
+                 nrot (_,(size,(x,y))) = translate x y (rectangleSolid size size)
 
 
-ftreetoList :: FTree a a -> [a]
-ftreetoList = cataFTree (either singl h)
-          where h(a,(b,c)) = [a] ++ b ++ c
 
 drawPTree = hyloFTree (either singl h) (criaFRPic) . initype
          where h(a,(b,c)) = [a] ++ b ++ c
                initype a = ((False,0,(0,0)),a)
+
+
+{- |
+tota :: Int -> [a] -> [a]
+tota _ [] = []
+tota 0 _ = []
+tota x (h:t) = h : tota (x-1) t
+
+main :: IO ()
+main = do ni <- getLine
+          let n = read ni :: Int
+          let pics = drawPTree (generatePTree (n))
+          let img t = pictures (tota (floor (t/2)) pics)
+          let jar = (InWindow "Test" (800,800) (0,0))
+          animate jar
+                  white
+                  img
+|-}
+
 \end{code}
 
 \subsection*{Problema 5}
