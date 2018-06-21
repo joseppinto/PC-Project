@@ -1086,7 +1086,7 @@ maxsize = cataQTree (either id f)
 matrixtrns :: Matrix Bool -> Matrix Bool
 matrixtrns a = let (nrow,ncol) = split nrows ncols a
                    cols = mapCol (\_ x -> True) 1 (mapCol (\_ x -> True) ncol a)
-                   rows = mapRow (\_ x -> True) 1 (mapRow (\_ x -> True) nrow a)
+                   rows = mapRow (\_ x -> True) 1 (mapRow (\_ x -> True) nrow cols)
                in rows
 
 
@@ -1131,7 +1131,7 @@ criaPita (a,b) = i2 (a,((a*razao,nb),(a*razao,nb))) where nb = pred b
 
 
 generatePTree = anaFTree criaPita . initype
-             where initype = split (const 100.0) id
+             where initype = split (const 10.0) id
 
 
 criaFRPic :: ((Bool,Float,(Float,Float)),FTree Float Float) -> Either Picture (Picture,(((Bool,Float,(Float,Float)),FTree Float Float),((Bool,Float,(Float,Float)),FTree Float Float)))
@@ -1150,13 +1150,37 @@ createImage = cond (fst) rot nrot
                  nrot (_,(size,(x,y))) = translate x y (rectangleSolid size size)
 
 
-
+{-|
 drawPTree = hyloFTree (either singl h) (criaFRPic) . initype
          where h(a,(b,c)) = [a] ++ b ++ c
                initype a = ((False,0,(0,0)),a)
+|-}
+
+loopAna :: [[a]] -> [[a]]
+loopAna [] = []
+loopAna [x] = [x]
+loopAna (h:t) = h : loopAna ((h++a) : tail t)
+             where a = head t
 
 
-{- |
+breadthFirst = fmap (pictures) . loopAna
+
+meteAlt :: (Int, FTree a b) -> Either (b,Int) ((a,Int),((Int, FTree a b),(Int, FTree a b)))
+meteAlt (x, Unit b) = i1 (b,x)
+meteAlt (x, Comp a f1 f2) = i2 ((a,x),((x-1,f1),(x-1,f2)))
+
+drawPTree = breadthFirst . anaList filterList . hyloFTree (either singl b) (meteAlt) . h
+     where h = split (const 0) k
+           b(a,(b,c)) = [a] ++ b ++ c
+           k = anaFTree (criaFRPic) . initype
+           initype a = ((False,0,(0,0)),a)
+
+filterList :: [(Picture,Int)] -> Either [Picture] ([Picture],[(Picture,Int)])
+filterList [] = i1 []
+filterList t  = i2 (f1,f2) where f1 = fmap (p1) (filter (\k -> p2 k == alt) t)
+                                 alt = p2 (head t)
+                                 f2 = filter (\k -> p2 k /= alt) t
+{-|
 tota :: Int -> [a] -> [a]
 tota _ [] = []
 tota 0 _ = []
@@ -1172,6 +1196,11 @@ main = do ni <- getLine
                   white
                   img
 |-}
+
+main :: IO()
+main = do ni <- getLine
+          let n = read ni :: Int
+          animatePTree n
 
 \end{code}
 
