@@ -1131,7 +1131,7 @@ criaPitagoras (a,b) = i2 (a,((a*razao,nb),(a*razao,nb))) where nb = pred b
 
 
 generatePTree = anaFTree criaPitagoras . initype
-             where initype = split (const 10.0) id
+             where initype = split (const 30.0) id
 
 
 criaFRPic :: ((Bool,Float,(Float,Float)),FTree Float Float) -> Either Picture (Picture,(((Bool,Float,(Float,Float)),FTree Float Float),((Bool,Float,(Float,Float)),FTree Float Float)))
@@ -1175,7 +1175,8 @@ drawPTree = breadthFirst . anaList filterList . hyloFTree (either singl b) (mete
            initype a = ((False,0,(0,0)),a)
 
 main :: IO()
-main = do ni <- getLine
+main = do putStrLn ("Número de niveis da árvore?")
+          ni <- getLine
           let n = read ni :: Int
           animatePTree n
 
