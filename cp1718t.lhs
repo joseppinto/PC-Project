@@ -82,17 +82,17 @@
 %---------------------------------------------------------------------------
 
 \title{
-       	    Cálculo de Programas
+            Cálculo de Programas
 \\
-       	Trabalho Prático
+        Trabalho Prático
 \\
-       	MiEI+LCC --- 2017/18
+        MiEI+LCC --- 2017/18
 }
 
 \author{
-       	\dium
+        \dium
 \\
-       	Universidade do Minho
+        Universidade do Minho
 }
 
 
@@ -627,15 +627,15 @@ teste2a = outlineQTree (==0) qt == qtOut
 \section*{Problema 3}
 O cálculo das combinações de |n| |k|-a-|k|,
 \begin{eqnarray}
-	|bin n k = frac (fac n)(fac k * (fac ((n-k))))|
-	\label{eq:bin}
+  |bin n k = frac (fac n)(fac k * (fac ((n-k))))|
+  \label{eq:bin}
 \end{eqnarray}
 envolve três factoriais. Recorrendo à \material{lei de recursividade múltipla} do cálculo
 de programas, é possível escrever o mesmo programa como um simples ciclo-for
 onde se fazem apenas multiplicações e somas. Para isso, começa-se por estruturar
 a definição dada da forma seguinte,
 \begin{eqnarray*}
-	|bin n k = h k (n - k)|
+  |bin n k = h k (n - k)|
 \end{eqnarray*}
 onde
 \begin{eqnarray*}
@@ -787,7 +787,7 @@ marbleWeights = fmap marbleWeight bagOfMarbles
 \end{code}
 onde |bagOfMarbles| é o saco de berlindes referido acima, obtendo-se:
 \begin{quote}\small
-	\verb!{ 2 |-> 3 , 3 |-> 5 , 6 |-> 2 }!.
+  \verb!{ 2 |-> 3 , 3 |-> 5 , 6 |-> 2 }!.
 \end{quote}
 %
 Mais ainda, se quisermos saber o total de berlindes em |bagOfMarbles| basta
@@ -833,7 +833,7 @@ instance Monad Bag where
 \item
 Defina a função |muB| (multiplicação do mónade |Bag|) e a função auxiliar
 |singletonbag|.
-\item	Verifique-as com os seguintes testes unitários:
+\item Verifique-as com os seguintes testes unitários:
 %if False
 \begin{code}
 muB :: Bag (Bag a) -> Bag a
@@ -876,8 +876,8 @@ efeitos especiais em progra\-mação. Por exemplo, a biblioteca \Probability\
 oferece um mónade para abordar problemas de probabilidades. Nesta biblioteca,
 o conceito de distribuição estatística é captado pelo tipo
 \begin{eqnarray}
-	|newtype Dist a = D {unD :: [(a, ProbRep)]}|
-	\label{eq:Dist}
+  |newtype Dist a = D {unD :: [(a, ProbRep)]}|
+  \label{eq:Dist}
 \end{eqnarray}
 em que |ProbRep| é um real de |0| a |1|, equivalente a uma escala de |0| a |100%|.
 
@@ -1121,6 +1121,118 @@ isValidMagicNr = pim . pam . pum
 \end{code}
 \subsection*{Problema 2}
 
+Diagrama 2a
+
+
+
+\begin{eqnarray*}
+\xymatrix@@C=4cm{
+    |QTree a|
+          \ar[r ]_-{|out|}
+          \ar[d]^-{|cataNat (inQTree.((id >< swap) + rotateaux))|}
+&
+    |A >< (IN >< IN) + (QTree a ^4)|
+           \ar[d]^-{|id + id >< cataNat(inQTree.((id >< swap) + rotateaux))|}
+\\
+     |QTree a|
+&
+     |A >< (Nat0 >< Nat0) + (QTree a ^4)|
+           \ar[l]^-{|inQTree.((id >< swap) + rotateaux)|}
+}
+\end{eqnarray*}
+
+Diagrama 2b
+
+\begin{eqnarray*}
+\xymatrix@@C=5cm{
+    |QTree a|
+          \ar[r ]_-{|out|}
+          \ar[d]^-{|cataNat (inQTree.node2p size id)|}
+&
+    |A >< (IN >< IN) + (QTree a ^4)|
+           \ar[d]^-{|id + id >< cataNat(inQTree.node2p size id|}
+\\
+     |QTree a|
+&
+     |A >< (Nat0 >< Nat0) + (QTree a ^4)|
+           \ar[l]^-{|inQTree.node2p size id|}
+}
+\end{eqnarray*}
+\begin{eqnarray*}
+size = (*tam) * (*tam)
+\end{eqnarray*}
+
+
+Diagrama 2c
+\begin{eqnarray*}
+\xymatrix@@C=4cm{
+    |QTree a|
+          \ar[r ]_-{|out|}
+          \ar[d]^-{|cataNat (inQTree.baseQTree invcor id)|}
+&
+    |A >< (IN >< IN) + (QTree a ^4)|
+           \ar[d]^-{|id + id >< cataNat(inQTree.baseQTree invcor id|}
+\\
+     |QTree a|
+&
+     |A >< (Nat0 >< Nat0) + (QTree a ^4)|
+        \ar[l]^-{|inQTree.invcor id|}
+}
+\end{eqnarray*}
+
+Diagrama 2d
+\begin{eqnarray*}
+\xymatrix@@C=3cm{
+    |QTree a|
+&
+    |A >< (IN >< IN) + (QTree a ^4)|
+           \ar[l]_-{|in|}
+\\
+     |Nat0 >< QTree a|
+            \ar[u]^-{}
+            \ar[r]^-{|transformaTree|}
+&
+     |A >< (Nat0 >< Nat0) + (N >< QTree)^4 |
+        \ar[u]^-{|id + id >< cataNat transfor|}
+\\
+     |QTree a|
+        \ar[u]_-{|split depthQTree id|}
+}
+\end{eqnarray*}
+
+Diagrama 2e
+\begin{eqnarray*}
+\xymatrix@@C=3cm{
+    |QTree a|
+          \ar[r ]_-{|out|}
+          \ar[d]^-{|cataNat (inQTree.baseQTree f id)|}
+&
+    |A >< (Nat0 >< Nat0) + (QTree a ^4)|
+           \ar[d]^-{|id + id >< cataNat(inQTree.baseQTree f id|}
+\\
+     |QTree Bool|
+        \ar[d]^-{|cataNat (inQTree swapTreeLines)|}
+        \ar[dr]^-{|inQTree.baseQTree f id|}
+&
+     |A >< (Nat0 >< Nat0) + (QTree Bool^4)|
+        \ar[l]_-{|inQTree.baseQTree f id|}
+\\
+    |QTree Bool|
+        \ar[d]^-{|qt2bm|}
+&
+    |Bool >< (Nat0 >< Nat0) + (QTree Bool ^4)|
+        \ar[d]^-{|id+id >< cataNat (in.QTree.swapTreeLines)|}
+\\
+    |Matrix Bool|
+&
+    |QTree Bool >< (Nat0 >< Nat0) + QTree Bool^4|
+        \ar[ul]^-{inQTree.swapTreeLines}
+}
+\end{eqnarray*}
+
+
+
+
 \begin{code}
 
 aux1 (a,(b,c)) = Cell a b c
@@ -1214,34 +1326,34 @@ múltipla:
 \just\equiv{ Fusão-+ ; Universal-+ }
 %
         |lcbr(
-		fun . const 0 = h . (id + (split fun fun2)) . i1
-	)(
-		fun . succ = h . (id + (split fun fun2)) . i2
-	)|
+    fun . const 0 = h . (id + (split fun fun2)) . i1
+  )(
+    fun . succ = h . (id + (split fun fun2)) . i2
+  )|
 %
 \just\equiv{ Fusão const. ; Natural i1; Natural i2 }
 %
         |lcbr(
-		fun 0 = h . i1 . id
-	)(
-		fun . succ = h . i2 . (split fun fun2)
-	)|
+    fun 0 = h . i1 . id
+  )(
+    fun . succ = h . i2 . (split fun fun2)
+  )|
 %
 \just\equiv{ Natural id; Igualdade existencional; Def. comp. }
 %
         |lcbr(
-		fun 0 = h.i1
-	)(
-		fun (succ x) = (h.i2) . (split fun fun2) x
-	)|
+    fun 0 = h.i1
+  )(
+    fun (succ x) = (h.i2) . (split fun fun2) x
+  )|
 %
 \just\equiv{ Def. succ; Def. split }
 %
         |lcbr(
-		fun 0 = h.i1
-	)(
-		fun (x + 1) = (h.i2) . ((fun x), (fun2 x))
-	)|
+    fun 0 = h.i1
+  )(
+    fun (x + 1) = (h.i2) . ((fun x), (fun2 x))
+  )|
 \end{eqnarray*}
 Agora, podemos aplicar as funções que são referidas no enunciado. Primeiro
  apliquemos esta lei a |f k| e |l k|:
@@ -1348,6 +1460,26 @@ loop (a, x, b, y) = (a*x, succ x, b*y, succ y)
 \end{code}
 \subsection*{Problema 4}
 
+Diagrama da 4a
+
+\begin{eqnarray*}
+\xymatrix@@C=6cm{
+    |FTree IR IR|
+&
+    |IR + IR >< (Ftree IR IR)^2|
+           \ar[l]_-{|either ftreeunit ftreeComp|}
+\\
+    |IR >< Nat0|
+            \ar[u]_-{|myana criaPitagoras |}
+            \ar[r]_-{|criaPitagoras|}
+&
+    |IR + IR >< (IR * Nat0)^2|
+          \ar[u]^{|id + id >< myana criaPitagoras|}
+}
+\end{eqnarray*}
+
+
+
 \begin{code}
 ftreeunit b = Unit b
 ftreeComp (a,(b,c)) = Comp a b c
@@ -1423,6 +1555,24 @@ main = do putStrLn ("Número de niveis da árvore?")
 \end{code}
 \subsection*{Problema 5}
 
+Diagrama da muB
+
+\begin{eqnarray*}
+\xymatrix@@C=6cm{
+    |B(C)|
+    \ar[d]_-{|unB|}
+&
+    |B(B(A))|
+           \ar[l]_-{|fmap unB|}
+       \ar[d]_-{|B.juntaBag.unB.fmap unB|}
+\\
+     |C|
+          \ar[r]^-{|B.juntaBag|}
+&
+     |B(A)|
+}
+\end{eqnarray*}
+
 \begin{code}
 singletonbag x = B [(x,1)]
 
@@ -1448,23 +1598,23 @@ dist b = D list
 Estudar o texto fonte deste trabalho para obter o efeito:\footnote{Exemplos tirados de \cite{Ol18}.}
 \begin{eqnarray*}
 \start
-	|id = split f g|
+  |id = split f g|
 %
 \just\equiv{ universal property }
 %
         |lcbr(
-		p1 . id = f
-	)(
-		p2 . id = g
-	)|
+    p1 . id = f
+  )(
+    p2 . id = g
+  )|
 %
 \just\equiv{ identity }
 %
         |lcbr(
-		p1 = f
-	)(
-		p2 = g
-	)|
+    p1 = f
+  )(
+    p2 = g
+  )|
 \qed
 \end{eqnarray*}
 
@@ -1485,6 +1635,8 @@ Os diagramas podem ser produzidos recorrendo à \emph{package} \LaTeX\
            \ar[l]^-{|g|}
 }
 \end{eqnarray*}
+
+
 
 %----------------- Fim do anexo com soluções dos alunos ------------------------%
 
