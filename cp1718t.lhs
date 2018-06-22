@@ -1039,9 +1039,9 @@ transação ou simplesmente somando (ou subtraindo) o valor ao par
      |Transactions|
           \ar[d]_-{|(cataNat (either nil sT))|}
 &
-     |Transactions + Transactions >< Transactions|
-           \ar[d]^{|id + (cataNat (either nil sT)) >< (cataNat (either nil sT))|}
-           \ar[l]^-{|g = either id conc|}
+     |1 + Transaction >< Transactions|
+           \ar[d]^{|id + id >< (cataNat (either nil sT))|}
+           \ar[l]^-{|g = either id cons|}
 \\
     |Ledger|
 &
@@ -1237,13 +1237,20 @@ Diagrama 2e
 
 aux1 (a,(b,c)) = Cell a b c
 aux2 (a,(b,(c,d))) = Block a b c d
+
 inQTree = either aux1 aux2
+
 outQTree (Cell a b c) = i1 (a,(b,c))
 outQTree (Block a b c d) = i2 (a,(b,(c,d)))
+
 baseQTree g f = (g><id) -|-  (f >< (f >< (f >< f)))
+
 recQTree f = baseQTree id f
+
 cataQTree g = g . (recQTree (cataQTree g)) . outQTree
+
 anaQTree f = inQTree . (recQTree (anaQTree f)) . f
+
 hyloQTree a c = cataQTree a . anaQTree c
 
 node2p g f = (id><g) -|-  (f >< (f >< (f >< f)))
@@ -1252,17 +1259,19 @@ instance Functor QTree where
     fmap f = cataQTree (inQTree . baseQTree f id)
 
 rotateaux (a,(b,(c,d))) = (c,(a,(d,b)))
+
 rotateQTree = cataQTree (inQTree . ((id><swap) -|- rotateaux))
 
 scaleQTree tam = cataQTree (inQTree . node2p size id) where size = (*tam)><(*tam)
 
 invcor (PixelRGBA8 a b c d) = PixelRGBA8 (255-a) (255-b) (255-c) d
+
 invertQTree = cataQTree (inQTree . baseQTree invcor id)
 
 
-compressQTree n tree = anaQTree transformaTree (nn n,tree)
-                    where h = depthQTree tree
-                          nn = cond (>h) (const 0) (const (h-n))
+compressQTree n = anaQTree transformaTree . fl
+                    where fl = (nn >< id) . split depthQTree id
+                          nn = cond (>n) ((+) (negate n)) (const 0)
 
 transformaTree :: (Int,QTree a) -> Either (a,(Int,Int)) ((Int,QTree a),((Int,QTree a),((Int,QTree a),(Int,QTree a))))
 transformaTree (_, Cell a b c) = i1 (a,(b,c))
@@ -1306,6 +1315,7 @@ swapTreeLines = cond typecheck h id
 
 
 outlineQTree f = qt2bm . cataQTree (inQTree . swapTreeLines) . cataQTree (inQTree . baseQTree f id)
+
 \end{code}
 \subsection*{Problema 3}
 Com base na implementação descrita no enunciado, podemos perceber que a função
@@ -1481,15 +1491,24 @@ Diagrama da 4a
 
 
 \begin{code}
+
 ftreeunit b = Unit b
+
 ftreeComp (a,(b,c)) = Comp a b c
+
 inFTree = either ftreeunit ftreeComp
+
 outFTree (Unit b) = i1 b
 outFTree (Comp a b c) = i2 (a,(b,c))
+
 baseFTree g f k = f -|- (g><(k><k))
+
 recFTree f = baseFTree id id f
+
 cataFTree g = g . (recFTree  (cataFTree g)) . outFTree
+
 anaFTree  f = inFTree . (recFTree (anaFTree f)) . f
+
 hyloFTree a c = cataFTree a . anaFTree c
 
 instance Bifunctor FTree where
