@@ -41,6 +41,7 @@
 \def\ana#1{\mathopen{[\!(}#1\mathclose{)\!]}}
 %format (cataA (f) (g)) = "\cata{" f "~" g "}_A"
 %format (anaA (f) (g)) = "\ana{" f "~" g "}_A"
+%format (myana (f)) = "\ana{" f "}"
 %format (cataB (f) (g)) = "\cata{" f "~" g "}_B"
 %format (anaB (f) (g)) = "\ana{" f "~" g "}_B"
 %format Either a b = a "+" b
@@ -987,16 +988,69 @@ cataBlockchain g = g . recBlockchain (cataBlockchain g) . outBlockchain
 anaBlockchain g = inBlockchain . recBlockchain (anaBlockchain g) . g
 
 hyloBlockchain h g = cataBlockchain h . anaBlockchain g
+\end{code}
 
 
+A função |allTransactions| é bastante simples. Pode ser facilmente definida,
+como é sugerido no enunciado, por um catamorfismo (definido acima para o tipo
+de dados |Blockchain|) que percorre toda a estrutura de dados e concatena a
+lista de transações de cada |Block|.
+
+\begin{eqnarray*}
+\xymatrix@@C=3cm{
+    |Blockchain|
+           \ar[d]_-{|allTransactions = (cataNat (g . (p2.p2 >< id)))|}
+&
+    |Block + Block >< Blockchain|
+           \ar[d]^{|p2.p2 + p2.p2 >< allTransactions|}
+           \ar[l]_-{|inBlockchain = either Bc Bcs|}
+\\
+     |Transactions|
+&
+     |Transactions + Transactions >< Transactions|
+           \ar[l]^-{|g = either id conc|}
+}
+\end{eqnarray*}
 
 
-
+\begin{code}
 allTransactions = cataBlockchain g
                 where g = either (p2.p2) (conc . (p2.p2 >< id))
 
+\end{code}
 
+A nossa implementação da função |ledger| faz uso do catamorfismo |allTransactions|
+para reduzir o |Blockchain| recebido a uma lista |Transactions|.
+Obtendo as |Transactions|, é processada a lista através de um catamorfismo que,
+para cada |Transaction|, verifica se as entidades envolvidas na mesma já estão
+no |ledger| acumulado até ao momento, registando-as com o valor referente à
+transação ou simplesmente somando (ou subtraindo) o valor ao par
+|(Entity, value)| já presente no |ledger|.
 
+\begin{eqnarray*}
+\xymatrix@@C=3cm{
+    |Blockchain|
+           \ar[d]_-{|allTransactions = (cataNat (g . (p2.p2 >< id)))|}
+&
+    |Block + Block >< Blockchain|
+           \ar[d]^{|p2.p2 + p2.p2 >< allTransactions|}
+           \ar[l]_-{|inBlockchain = either Bc Bcs|}
+\\
+     |Transactions|
+          \ar[d]_-{|(cataNat (either nil sT))|}
+&
+     |Transactions + Transactions >< Transactions|
+           \ar[d]^{|id + (cataNat (either nil sT)) >< (cataNat (either nil sT))|}
+           \ar[l]^-{|g = either id conc|}
+\\
+    |Ledger|
+&
+    |1 + (Transaction >< Ledger)|
+          \ar[l]^-{|g = either nil sT|}
+}
+\end{eqnarray*}
+
+\begin{code}
 sT = uncurry somaTrans
 somaTrans :: Transaction -> Ledger -> Ledger
 somaTrans (a,(b,c)) l = somaValor (a,-b) (somaValor (c,b) l)
@@ -1013,7 +1067,50 @@ replacePair (a,b) ((x,y):t) = if a == x then (a, b + y):t
 
 ledger = (cataList (either nil sT)) . allTransactions
 
+\end{code}
 
+A nossa implementação da função |isValidMagicNr| começa com a aplicação de
+um |cataBlockchain| que reduz o |Blockchain| a uma lista |[MagicNo]|. Seguidamente é aplicado um
+anamorfismo que transforma essa lista numa lista |[Bool]| que indica,
+para cada valor da lista |[MagicNo]|, se esse valor se encontra repetido no
+resto da lista. Finalmente essa lista |[Bool]| é reduzida a um único
+|Bool| através de um catamorfismo que efetua a conjunção de todos os booleanos
+da lista.
+
+\begin{eqnarray*}
+\xymatrix@@C=6cm{
+    |Bool|
+&
+    |1 + Bool >< Bool|
+           \ar[l]_-{|either True el|}
+\\
+     |[Bool]|
+          \ar[u]_-{|(cataNat (either True e)|}
+          \ar[r]^-{|outList|}
+&
+     |1 + Bool >< [Bool]|
+           \ar[u]^{|id + id >< (cataNat (either true e))|}
+           \ar[l]^-{|either nil cons|}
+\\
+    |[MagicNo]|
+          \ar[u]_-{|(myana ((id + (split (not . el) p2)).outList))|}
+          \ar[r]^-{|outList|}
+&
+    |1 + MagicNo >< [MagicNo]|
+          \ar[u]^{|id + (not . el) >< (myana ((id + (split (not . el) p2)).outList))|}
+          \ar[l]^-{|either nil cons|}
+\\
+    |Blockchain|
+          \ar[u]_-{|(cataNat (either (cons . split p1 nil) (cons . (p1 >< id))))|}
+&
+    |Block + Block >< Blockchain|
+          \ar[u]^{|p1 + p1 >< (cataNat (either (cons . split p1 nil) (cons . (p1 >< id))))|}
+          \ar[l]_-{|inBlockchain = either Bc Bcs|}
+}
+\end{eqnarray*}
+
+
+\begin{code}
 el = uncurry elem
 e  = uncurry (&&)
 isValidMagicNr = pim . pam . pum
@@ -1098,82 +1195,58 @@ swapTreeLines = cond typecheck h id
 
 outlineQTree f = qt2bm . cataQTree (inQTree . swapTreeLines) . cataQTree (inQTree . baseQTree f id)
 \end{code}
-
 \subsection*{Problema 3}
-
 Com base na implementação descrita no enunciado, podemos perceber que a função
 |base| gera um túpulo com 4 elementos.
 Daí concluímos que a função |loop| recebe um túpulo de 4 elementos e devolve
 outro (o ciclo for também devolve um túpulo assim).
-
 |for loop (base k) = (cataNat (either (base k) loop))|
-
-
 Por enquanto, concentremo-nos  em trabalhar com as leis da recursividade
 múltipla:
-
 \begin{eqnarray*}
 \start
-
-
-\{ Lei de Fokkinga \}
-
-|fun.in = h.F<fun,fun2>|
-
+  |fun . in = h . F<fun,fun2>|
 %
-\just\equiv{Def. in; Def. (F f) nos naturais}
+\just\equiv{ Def. in ; Def. (F f) nos naturais }
 %
-
-|fun.(either (const 0) succ) = h.(id + split fun fun2)|
-
+  |fun . (either (const 0) succ) = h . (id + (split fun fun2))|
 %
-\just\equiv{Fusão-+; Universal-+}
+\just\equiv{ Fusão-+ ; Universal-+ }
 %
-
         |lcbr(
-		fun . const 0 = h.(id + split fun fun2).i1
+		fun . const 0 = h . (id + (split fun fun2)) . i1
 	)(
-		fun . succ = h.(id + split fun fun2).i2
+		fun . succ = h . (id + (split fun fun2)) . i2
 	)|
-
 %
 \just\equiv{ Fusão const. ; Natural i1; Natural i2 }
 %
-
         |lcbr(
-		fun 0 = h.i1.id
+		fun 0 = h . i1 . id
 	)(
-		fun . succ = h.i2.split fun fun2
+		fun . succ = h . i2 . (split fun fun2)
 	)|
-
 %
-\just\equiv{ Natural id; Igualdade existencional; Def. comp.}
+\just\equiv{ Natural id; Igualdade existencional; Def. comp. }
 %
-
         |lcbr(
 		fun 0 = h.i1
 	)(
 		fun (succ x) = (h.i2) . (split fun fun2) x
 	)|
-
 %
-\just\equiv{ Def. succ; Def. split}
+\just\equiv{ Def. succ; Def. split }
 %
         |lcbr(
 		fun 0 = h.i1
 	)(
 		fun (x + 1) = (h.i2) . ((fun x), (fun2 x))
 	)|
-
-
 \end{eqnarray*}
-
 Agora, podemos aplicar as funções que são referidas no enunciado. Primeiro
  apliquemos esta lei a |f k| e |l k|:
-
 \begin{eqnarray*}
 \start
-
            |lcbr(
          lcbr(
      f k 0 = h1.i1
@@ -1185,12 +1258,10 @@ Agora, podemos aplicar as funções que são referidas no enunciado. Primeiro
    )(
      l k (x + 1) = (h2.i2) . ((f k x), (l k x))
    )
-     )|
-
+   )|
 %
-\just\equiv{Def. f; |h1 = either (const 1) mul|; |h2 = either (const (k + 1)) (succ.p2)| ; Cancelamento-+}
+\just\equiv{ Def. f; |h1 = either (const 1) mul|; |h2 = either (const (k + 1)) (succ.p2)| ; Cancelamento-+ }
 %
-
            |lcbr(
          lcbr(
      f k 0 = 1
@@ -1202,18 +1273,14 @@ Agora, podemos aplicar as funções que são referidas no enunciado. Primeiro
    )(
      l k (x + 1) = succ . l k x
    )
-     )|
-
+   )|
 \end{eqnarray*}
-
 Repetindo o processo para |g| e |s|, temos:
 \begin{eqnarray*}
 \start
-
  %
-\{... ; |h3 = either (const 1) mul|; |h4 = either (const 1) (succ.p2)| \}
+\{ ... ; |h3 = either (const 1) mul|; |h4 = either (const 1) (succ.p2)| \}
  %
-
            |lcbr(
          lcbr(
      g 0 = 1
@@ -1226,88 +1293,59 @@ Repetindo o processo para |g| e |s|, temos:
      s (x + 1) = succ . s x
    )
      )|
-
 \end{eqnarray*}
-
  Recordando que |h1 = either (const 1) mul |, |h2 = either (const (k + 1)) (succ.p2)|,
  |h3 = either (const 1) mul|, e |h4 = either (const 1) (succ.p2)|,
  podemos voltar à lei de Fokkinga e concluir que:
-
  \begin{eqnarray*}
  \start
-
      |lcbr(
    split (f k) (l k) = (cataNat (split (either (const 1) mul) (either (k + 1) (succ.p2))))
      )(
    split (g) (s) = (cataNat (split (either (const 1) mul) (either (const 1) (succ.p2))))
    )|
-
-
 \end{eqnarray*}
-
  Como esta expressão sugere, podemos combinar estes dois catamorfismos seguindo
  a lei de banana-split :
-
 \begin{eqnarray*}
 \start
-
-    |split (cataNat (split h1 h2)) (cataNat (split h3 h4)))) = (cataNat (((split (either (const 1) mul) (either (const (k + 1)) (succ.p2))) >< (split (either (const 1) mul) (either (const 1) (succ.p2)))) . (split (F p1) (F p2))))|
-
+    |split (cataNat (split h1 h2)) (cataNat (split h3 h4)) = (cataNat (((split (either (const 1) mul) (either (const (k + 1)) (succ.p2))) >< (split (either (const 1) mul) (either (const 1) (succ.p2)))) . (split (F p1) (F p2))))|
 %
-\just\equiv{Absorção-x ; Def. F f nos naturais}
+\just\equiv{ Absorção-x ; Def. F f nos naturais }
 %
-
-    |split (cataNat (split h1 h2)) (cataNat (split h3 h4)))) = (cataNat (((split (either (const 1) mul) (either (const (k + 1)) (succ.p2))).(id + p1) >< (split (either (const 1) mul) (either (const 1) (succ.p2))).(id + p2))))|
-
+    |split (cataNat (split h1 h2)) (cataNat (split h3 h4)) = (cataNat (((split (either (const 1) mul) (either (const (k + 1)) (succ.p2))).(id + p1) >< (split (either (const 1) mul) (either (const 1) (succ.p2))).(id + p2))))|
 %
-\just\equiv{Absorção-x ; Absorção-+ ; Def. id}
+\just\equiv{ Absorção-x ; Absorção-+ ; Def. id }
 %
-
-    |split (cataNat (split h1 h2)) (cataNat (split h3 h4)))) = (cataNat (((split (either (const 1) (mul.p1)) (either (const (k + 1)) (succ.p2.p1))) >< (split (either (const 1) (mul.p2)) (either (const 1) (succ.p2.p2))))))|
-
+    |split (cataNat (split h1 h2)) (cataNat (split h3 h4)) = (cataNat (((split (either (const 1) (mul.p1)) (either (const (k + 1)) (succ.p2.p1))) >< (split (either (const 1) (mul.p2)) (either (const 1) (succ.p2.p2))))))|
 %
-\just\equiv{Lei da Troca}
+\just\equiv{ Lei da Troca }
 %
-
-    |split (cataNat (split h1 h2)) (cataNat (split h3 h4)))) = (cataNat (either (split (const 1) (const (k+1))) (split (mul.p1) (succ.p2.p1)) >< either (split (const 1) (const 1)) (split (mul.p2) (succ.p2.p2))))|
-
+    |split (cataNat (split h1 h2)) (cataNat (split h3 h4)) = (cataNat (either (split (const 1) (const (k+1))) (split (mul.p1) (succ.p2.p1)) >< either (split (const 1) (const 1)) (split (mul.p2) (succ.p2.p2))))|
 %
-\just\equiv{Def.-Const; Fusão-x ; Fusão- + ; Def.-x}
+\just\equiv{ Def.-Const; Fusão-x ; Fusão- + ; Def.-x }
 %
-
-    |split (cataNat (split h1 h2)) (cataNat (split h3 h4)))) = (cataNat (split (either (split (const 1) (const k + 1)) (split mul (succ.p2))) (either (split (const 1) (const 1)) (split mul (succ.p2)))))|
-
+    |split (cataNat (split h1 h2)) (cataNat (split h3 h4)) = (cataNat (split (either (split (const 1) (const k + 1)) (split mul (succ.p2))) (either (split (const 1) (const 1)) (split mul (succ.p2)))))|
 %
-\just\equiv{Lei da Troca}
+\just\equiv{ Lei da Troca }
 %
-
-    |split (cataNat (split h1 h2)) (cataNat (split h3 h4))) = (cataNat (either (underbrace (split (split (const 1) (const (k + 1))) (split (const 1) (const 1))) (base k)) (underbrace (split (split mul (succ.p2)) (split mul (succ.p2))) loop )))|
-
-
+    |split (cataNat (split h1 h2)) (cataNat (split h3 h4)) = (cataNat (either (underbrace (split (split (const 1) (const (k + 1))) (split (const 1) (const 1))) (base k)) (underbrace (split (split mul (succ.p2)) (split mul (succ.p2))) loop )))|
 \end{eqnarray*}
-
 Recordando a interpretação inicial, e que |for loop (base k) = (cataNat (either (base k) loop))|, temos então:
-
 \begin{eqnarray*}
 \start
-
 |cataNat (either (base k) loop) = (cataNat (either (underbrace (split (split (const 1) (const (k + 1))) (split (const 1) (const 1))) (base k)) (underbrace (split (split mul (succ.p2)) (split mul (succ.p2))) loop )))|
-
 \end{eqnarray*}
-
 Obtendo esta expressão, podemos observar uma forma muito parecida com o pretendido,
 a partir da qual podemos já deduzir as funções |base k| e |loop|. Basta olhar
 para o either no membro direito da equação. Note-se que a equação obtida
 funciona com um par de pares que, por simplicidade, foi definido como
 um túpulo de 4 elementos, pelo que as funções são definidas de modo |pointwise|.
 
-
-
 \begin{code}
 base k = (1, k + 1, 1, 1)
 loop (a, x, b, y) = (a*x, succ x, b*y, succ y)
 \end{code}
-
 \subsection*{Problema 4}
 
 \begin{code}
@@ -1383,7 +1421,6 @@ main = do putStrLn ("Número de niveis da árvore?")
           animatePTree n
 
 \end{code}
-
 \subsection*{Problema 5}
 
 \begin{code}
@@ -1407,7 +1444,6 @@ dist b = D list
             odds x = toFloat x / toFloat size
 
 \end{code}
-
 \section{Como exprimir cálculos e diagramas em LaTeX/lhs2tex}
 Estudar o texto fonte deste trabalho para obter o efeito:\footnote{Exemplos tirados de \cite{Ol18}.}
 \begin{eqnarray*}
