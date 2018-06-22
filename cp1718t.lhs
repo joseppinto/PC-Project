@@ -674,7 +674,7 @@ derive as funções |base k| e |loop| que são usadas como auxiliares acima.
 \begin{propriedade}
 Verificação que |bin n k| coincide com a sua especificação (\ref{eq:bin}):
 \begin{code}
-prop3 n k = (bin n k) == (fac n) % (fac k * (fac ((n-k))))
+prop3 (NonNegative n) (NonNegative k) = k <= n ==> (bin n k) == (fac n) % (fac k * (fac ((n-k))))
 \end{code}
 \end{propriedade}
 
@@ -1064,7 +1064,7 @@ transformaTree (size, Block a b c d) = let nsize = size - 1
 
 transfor (Cell a b c) = Cell a b c
 transfor a = Cell na (fst size) (snd size)
-          where na = fst (maxsize a)
+          where na = fst $ maxsize a
                 size = sizeQTree a
 
 
@@ -1094,6 +1094,7 @@ swapTreeLines = cond typecheck h id
              where h = cond (\(Left (a,(b,c))) -> a==True) (outQTree . bm2qt . matrixtrns . qt2bm . swapcel . inQTree) id
                    swapcel (Cell a b c) = Cell False b c
                    typecheck = either (const True) (const False)
+
 
 outlineQTree f = qt2bm . cataQTree (inQTree . swapTreeLines) . cataQTree (inQTree . baseQTree f id)
 \end{code}
@@ -1325,44 +1326,86 @@ instance Bifunctor FTree where
     bimap g f = cataFTree (inFTree . baseFTree g f id)
 
 
-criaPita :: (Square,Int) -> Either Square (Square,((Square,Int),(Square,Int)))
-criaPita (a,0) = i1 (a)
-criaPita (a,b) = i2 (a,((a*razao,nb),(a*razao,nb))) where nb = pred b
-                                                          razao = sqrt(2)/2
+criaPitagoras :: (Square,Int) -> Either Square (Square,((Square,Int),(Square,Int)))
+criaPitagoras (a,0) = i1 (a)
+criaPitagoras (a,b) = i2 (a,((a*razao,nb),(a*razao,nb))) where nb = pred b
+                                                               razao = sqrt(2)/2
 
 
-generatePTree = anaFTree criaPita . initype
-             where initype = split (const 20.0) id
---falta fazer o rotate à imagem e consiguir meter a reproduzir
+generatePTree = anaFTree criaPitagoras . initype
+             where initype = split (const 30.0) id
+
+
 criaFRPic :: ((Bool,Float,(Float,Float)),FTree Float Float) -> Either Picture (Picture,(((Bool,Float,(Float,Float)),FTree Float Float),((Bool,Float,(Float,Float)),FTree Float Float)))
-criaFRPic ((s,a,(x,y)),Unit b) = i1 (translate x y (rectangleSolid b b))
-criaFRPic ((s,a,(x,y)),Comp size f1 f2) = i2 (translate x y (rectangleSolid size size),(b,c))
+criaFRPic ((s,a,(x,y)),Unit b) = i1 (createImage (s,(b,(x,y))))
+criaFRPic ((s,a,(x,y)),Comp size f1 f2) = i2 (createImage (s,(size,(x,y))),(b,c))
                 where vd = rotateV a (split (/2) id size)
                       ve = rotateV a (split ((negate).(/2)) id size)
-                      ang = atan 2
+                      ang = atan 1
                       na = (ang + a, a - ang)
                       b = ((not s,fst na,(x+fst ve,y+snd ve)), f1)
                       c = ((not s,snd na,(x+fst vd,y+snd vd)), f2)
 
-teste2 (Unit b) = i1 (rectangleSolid 10.0 10.0)
-teste2 (Comp a b c) = i2 ((rectangleSolid 10.0 10.0),(b,c))
+createImage :: (Bool,(Float,(Float,Float))) -> Picture
+createImage = cond (fst) rot nrot
+           where rot (_,(size,(x,y))) = translate x y (rotate (45.0) (rectangleSolid size size))
+                 nrot (_,(size,(x,y))) = translate x y (rectangleSolid size size)
+
+loopAna :: [[a]] -> [[a]]
+loopAna [] = []
+loopAna [x] = [x]
+loopAna (h:t) = h : loopAna ((h++a) : tail t)
+             where a = head t
 
 
-ftreetoList :: FTree a a -> [a]
-ftreetoList = cataFTree (either singl h)
-          where h(a,(b,c)) = [a] ++ b ++ c
+meteAlt :: (Int, FTree a b) -> Either (b,Int) ((a,Int),((Int, FTree a b),(Int, FTree a b)))
+meteAlt (x, Unit b) = i1 (b,x)
+meteAlt (x, Comp a f1 f2) = i2 ((a,x),((x-1,f1),(x-1,f2)))
 
-drawPTree = hyloFTree (either singl h) (criaFRPic) . initype
-         where h(a,(b,c)) = [a] ++ b ++ c
-               initype a = ((False,0,(0,0)),a)
+filterList :: [(a,Int)] -> Either [a] ([a],[(a,Int)])
+filterList [] = i1 []
+filterList t  = i2 (f1 t,f2 t) where f1 = map (p1) . filter (\k -> p2 k == alt)
+                                     alt = p2 (head t)
+                                     f2 = filter (\k -> p2 k /= alt)
+
+breadthFirst = fmap (pictures) . loopAna
+
+drawPTree = breadthFirst . anaList filterList . hyloFTree (either singl b) (meteAlt) . h
+     where h = split (const 0) k
+           b(a,(b,c)) = [a] ++ b ++ c
+           k = anaFTree (criaFRPic) . initype
+           initype a = ((False,0,(0,0)),a)
+
+main :: IO()
+main = do putStrLn ("Número de niveis da árvore?")
+          ni <- getLine
+          let n = read ni :: Int
+          animatePTree n
+
 \end{code}
 
 \subsection*{Problema 5}
 
 \begin{code}
-singletonbag = undefined
-muB = undefined
-dist = undefined
+singletonbag x = B [(x,1)]
+
+muB = B. juntaBag . unB . fmap unB
+
+transforBagBagList :: [ ( [(t,Int)], Int) ] -> Either [ [(t,Int)] ] ( [(t,Int)], [ ([(t,Int)],Int) ])
+transforBagBagList [] = i1 []
+transforBagBagList list = i2 (ele,tail list)
+                       where (listmod,x) = head list
+                             ele = map (id><(*x)) listmod
+
+juntaBag = hyloList (either nil h) transforBagBagList
+        where h (a,b) = a ++ b
+
+
+dist b = D list
+      where size = sum . map p2 $ unB b
+            list = fmap (id><odds) $ unB b
+            odds x = toFloat x / toFloat size
+
 \end{code}
 
 \section{Como exprimir cálculos e diagramas em LaTeX/lhs2tex}
