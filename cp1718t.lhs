@@ -1100,9 +1100,211 @@ outlineQTree f = qt2bm . cataQTree (inQTree . swapTreeLines) . cataQTree (inQTre
 
 \subsection*{Problema 3}
 
+Com base na implementação descrita no enunciado, podemos perceber que a função
+|base| gera um túpulo com 4 elementos.
+Daí concluímos que a função |loop| recebe um túpulo de 4 elementos e devolve
+outro (o ciclo for também devolve um túpulo assim).
+
+|for loop (base k) = (cataNat (either (base k) loop))|
+
+
+Por enquanto, concentremo-nos  em trabalhar com as leis da recursividade
+múltipla:
+
+\begin{eqnarray*}
+\start
+
+
+\{ Lei de Fokkinga \}
+
+|fun.in = h.F<fun,fun2>|
+
+%
+\just\equiv{Def. in; Def. (F f) nos naturais}
+%
+
+|fun.(either (const 0) succ) = h.(id + split fun fun2)|
+
+%
+\just\equiv{Fusão-+; Universal-+}
+%
+
+        |lcbr(
+		fun . const 0 = h.(id + split fun fun2).i1
+	)(
+		fun . succ = h.(id + split fun fun2).i2
+	)|
+
+%
+\just\equiv{ Fusão const. ; Natural i1; Natural i2 }
+%
+
+        |lcbr(
+		fun 0 = h.i1.id
+	)(
+		fun . succ = h.i2.split fun fun2
+	)|
+
+%
+\just\equiv{ Natural id; Igualdade existencional; Def. comp.}
+%
+
+        |lcbr(
+		fun 0 = h.i1
+	)(
+		fun (succ x) = (h.i2) . (split fun fun2) x
+	)|
+
+%
+\just\equiv{ Def. succ; Def. split}
+%
+        |lcbr(
+		fun 0 = h.i1
+	)(
+		fun (x + 1) = (h.i2) . ((fun x), (fun2 x))
+	)|
+
+
+\end{eqnarray*}
+
+Agora, podemos aplicar as funções que são referidas no enunciado. Primeiro
+ apliquemos esta lei a |f k| e |l k|:
+
+\begin{eqnarray*}
+\start
+
+           |lcbr(
+         lcbr(
+     f k 0 = h1.i1
+   )(
+     f k (x + 1) = (h1.i2) . ((f k x), (l k x))
+   ))
+         (lcbr(
+     l k 0 = h2.i1
+   )(
+     l k (x + 1) = (h2.i2) . ((f k x), (l k x))
+   )
+     )|
+
+%
+\just\equiv{Def. f; |h1 = either (const 1) mul|; |h2 = either (const (k + 1)) (succ.p2)| ; Cancelamento-+}
+%
+
+           |lcbr(
+         lcbr(
+     f k 0 = 1
+   )(
+     f k (x + 1) = mul (f k x) (l k x)
+   ))
+         (lcbr(
+     l k 0 = k + 1
+   )(
+     l k (x + 1) = succ . l k x
+   )
+     )|
+
+\end{eqnarray*}
+
+Repetindo o processo para |g| e |s|, temos:
+\begin{eqnarray*}
+\start
+
+ %
+\{... ; |h3 = either (const 1) mul|; |h4 = either (const 1) (succ.p2)| \}
+ %
+
+           |lcbr(
+         lcbr(
+     g 0 = 1
+   )(
+     g (x + 1) = mul (g x) (s x)
+   ))
+         (lcbr(
+     s 0 = 1
+   )(
+     s (x + 1) = succ . s x
+   )
+     )|
+
+\end{eqnarray*}
+
+ Recordando que |h1 = either (const 1) mul |, |h2 = either (const (k + 1)) (succ.p2)|,
+ |h3 = either (const 1) mul|, e |h4 = either (const 1) (succ.p2)|,
+ podemos voltar à lei de Fokkinga e concluir que:
+
+ \begin{eqnarray*}
+ \start
+
+     |lcbr(
+   split (f k) (l k) = (cataNat (split (either (const 1) mul) (either (k + 1) (succ.p2))))
+     )(
+   split (g) (s) = (cataNat (split (either (const 1) mul) (either (const 1) (succ.p2))))
+   )|
+
+
+\end{eqnarray*}
+
+ Como esta expressão sugere, podemos combinar estes dois catamorfismos seguindo
+ a lei de banana-split :
+
+\begin{eqnarray*}
+\start
+
+    |split (cataNat (split h1 h2)) (cataNat (split h3 h4)))) = (cataNat (((split (either (const 1) mul) (either (const (k + 1)) (succ.p2))) >< (split (either (const 1) mul) (either (const 1) (succ.p2)))) . (split (F p1) (F p2))))|
+
+%
+\just\equiv{Absorção-x ; Def. F f nos naturais}
+%
+
+    |split (cataNat (split h1 h2)) (cataNat (split h3 h4)))) = (cataNat (((split (either (const 1) mul) (either (const (k + 1)) (succ.p2))).(id + p1) >< (split (either (const 1) mul) (either (const 1) (succ.p2))).(id + p2))))|
+
+%
+\just\equiv{Absorção-x ; Absorção-+ ; Def. id}
+%
+
+    |split (cataNat (split h1 h2)) (cataNat (split h3 h4)))) = (cataNat (((split (either (const 1) (mul.p1)) (either (const (k + 1)) (succ.p2.p1))) >< (split (either (const 1) (mul.p2)) (either (const 1) (succ.p2.p2))))))|
+
+%
+\just\equiv{Lei da Troca}
+%
+
+    |split (cataNat (split h1 h2)) (cataNat (split h3 h4)))) = (cataNat (either (split (const 1) (const (k+1))) (split (mul.p1) (succ.p2.p1)) >< either (split (const 1) (const 1)) (split (mul.p2) (succ.p2.p2))))|
+
+%
+\just\equiv{Def.-Const; Fusão-x ; Fusão- + ; Def.-x}
+%
+
+    |split (cataNat (split h1 h2)) (cataNat (split h3 h4)))) = (cataNat (split (either (split (const 1) (const k + 1)) (split mul (succ.p2))) (either (split (const 1) (const 1)) (split mul (succ.p2)))))|
+
+%
+\just\equiv{Lei da Troca}
+%
+
+    |split (cataNat (split h1 h2)) (cataNat (split h3 h4))) = (cataNat (either (underbrace (split (split (const 1) (const (k + 1))) (split (const 1) (const 1))) (base k)) (underbrace (split (split mul (succ.p2)) (split mul (succ.p2))) loop )))|
+
+
+\end{eqnarray*}
+
+Recordando a interpretação inicial, e que |for loop (base k) = (cataNat (either (base k) loop))|, temos então:
+
+\begin{eqnarray*}
+\start
+
+|cataNat (either (base k) loop) = (cataNat (either (underbrace (split (split (const 1) (const (k + 1))) (split (const 1) (const 1))) (base k)) (underbrace (split (split mul (succ.p2)) (split mul (succ.p2))) loop )))|
+
+\end{eqnarray*}
+
+Obtendo esta expressão, podemos observar uma forma muito parecida com o pretendido,
+a partir da qual podemos já deduzir as funções |base k| e |loop|. Basta olhar
+para o either no membro direito da equação. Note-se que a equação obtida
+funciona com um par de pares que, por simplicidade, foi definido como
+um túpulo de 4 elementos, pelo que as funções são definidas de modo |pointwise|.
+
+
+
 \begin{code}
-base = undefined
-loop = undefined
+base k = (1, k + 1, 1, 1)
+loop (a, x, b, y) = (a*x, succ x, b*y, succ y)
 \end{code}
 
 \subsection*{Problema 4}
