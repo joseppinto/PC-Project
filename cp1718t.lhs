@@ -1039,9 +1039,9 @@ transação ou simplesmente somando (ou subtraindo) o valor ao par
      |Transactions|
           \ar[d]_-{|(cataNat (either nil sT))|}
 &
-     |Transactions + Transactions >< Transactions|
-           \ar[d]^{|id + (cataNat (either nil sT)) >< (cataNat (either nil sT))|}
-           \ar[l]^-{|g = either id conc|}
+     |1 + Transaction >< Transactions|
+           \ar[d]^{|id + id >< (cataNat (either nil sT))|}
+           \ar[l]^-{|g = either id cons|}
 \\
     |Ledger|
 &
