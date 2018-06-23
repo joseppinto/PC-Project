@@ -1173,7 +1173,7 @@ Diagrama rotateQTree
           \ar[d]^-{|cataNat (inQTree.((id >< swap) + rotateaux))|}
 &
     |A >< (Nat0 >< Nat0) + (QTree a )^4|
-           \ar[d]^-{|id + id >< cataNat(inQTree.((id >< swap) + rotateaux))|}
+           \ar[d]^-{|id  >< cataNat(inQTree.((id >< swap) + rotateaux))|}
 \\
      |QTree a|
 &
@@ -1200,7 +1200,7 @@ Diagrama da scaleQTree
           \ar[d]^-{|cataNat (inQTree.node2p size id)|}
 &
     |A >< (Nat0 >< Nat0) + (QTree a )^4|
-           \ar[d]^-{|id + id >< cataNat(inQTree.node2p size id|}
+           \ar[d]^-{|id  >< cataNat(inQTree.node2p size id|}
 \\
      |QTree a|
 &
@@ -1231,7 +1231,7 @@ Diagrama da invertQTree
           \ar[d]^-{|cataNat (inQTree.baseQTree invcor id)|}
 &
     |PixelRGBA8 >< (Nat0 >< Nat0) + (QTree a )^4|
-           \ar[d]^-{|id + id >< cataNat(inQTree.baseQTree invcor id|}
+           \ar[d]^-{|id >< cataNat(inQTree.baseQTree invcor id|}
 \\
      |QTree PixelRGBA8|
 &
@@ -1291,7 +1291,7 @@ maxsize = cataQTree (either id f)
                    \ar[r]^-{|transformaTree|}
        &
             |A >< (Nat0 >< Nat0) + (Nat0 >< QTree a)^4 |
-               \ar[u]_-{|id + id >< myana transformaTree|}
+               \ar[u]_-{|id  >< myana transformaTree|}
        \\
            |Nat0 >< QTree a|
                \ar[u]_-{|(((either ((-n)) (const 0)).(>n)?) >< id)|}
@@ -1337,7 +1337,7 @@ Diagrama da outlineQTree
           \ar[dd]^-{|cataNat (inQTree.baseQTree f id)|}
 &
     |A >< (Nat0 >< Nat0) + (QTree a )^4|
-           \ar[d]^-{|id + id >< cataNat(inQTree.baseQTree f id|}
+           \ar[d]^-{|id  >< cataNat(inQTree.baseQTree f id|}
 \\
 &
      |A >< (Nat0 >< Nat0) + (QTree Bool)^4|
@@ -1348,7 +1348,7 @@ Diagrama da outlineQTree
         \ar[r]_-{|outQTree|}
 &
     |Bool >< (Nat0 >< Nat0) + (QTree Bool )^4|
-        \ar[d]^-{|id+id >< cataNat (inQTree.swapTreeLines)|}
+        \ar[d]^-{|id >< cataNat (inQTree.swapTreeLines)|}
 \\
     |QTree Bool|
         \ar[d]^-{|qt2bm|}
@@ -1569,7 +1569,7 @@ Diagrama da generatePTree
            \ar[u]_-{|myana criaPitagoras |}
            \ar[r]_-{|criaPitagoras|}
 &
-        |IR + IR >< (IR * Nat0)^2|
+        |IR + IR >< (IR >< Nat0)^2|
             \ar[u]^{|id + id >< myana criaPitagoras|}
 \\
         |Nat0|
