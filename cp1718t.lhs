@@ -1682,7 +1682,7 @@ Diagrama da muB
 \end{eqnarray*}
 
 \begin{code}
-singletonbag x = B [(x,1)]
+singletonbag = B. singl . split id (const 1)
 
 muB = B. juntaBag . unB . fmap unB
 
