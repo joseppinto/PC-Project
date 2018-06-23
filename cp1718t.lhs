@@ -1301,25 +1301,24 @@ Diagrama 4b
 \end{eqnarray*}
 
 
-\begin{eqnarray*}
 \xymatrix@@C=1cm{
-|where b(a,(b,c)) = [a] ++ b ++ c |
+|b(a,(d,c)) = [a] ++ d ++ c |
 }
 \end{eqnarray*}
 
 \begin{eqnarray*}
 \xymatrix@@C=1cm{
-|where A = FTree (Picture >< Nat0) (Picture >< Nat0)|
+|A = FTree (Picture >< Nat0) (Picture >< Nat0)|
 }
 \end{eqnarray*}
 \begin{eqnarray*}
 \xymatrix@@C=1cm{
-|where B = FTree Float Float|
+|B = FTree Float Float|
 }
 \end{eqnarray*}
 \begin{eqnarray*}
 \xymatrix@@C=1cm{
-|where C = FTree Picture Picture|
+|C = FTree Picture Picture|
 }
 \end{eqnarray*}
 
