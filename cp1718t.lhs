@@ -1201,7 +1201,7 @@ Diagrama 2d
 }
 \end{eqnarray*}
 
-Diagrama 4b
+Diagrama 2e
 \begin{eqnarray*}
 \xymatrix@@C=5cm{
     |QTree a|
@@ -1233,7 +1233,7 @@ Diagrama 4b
 \end{eqnarray*}
 
 
-Diagrama 2e
+Diagrama 4b
 \begin{eqnarray*}
 \xymatrix@@C=1cm{
     |(Picture*)*|
@@ -1282,7 +1282,7 @@ Diagrama 2e
         \ar[u]_-{|myana criaFRPic|}
         \ar[r]^-{|criaFRPic|}
 &
-    |Picture + Picture >< (Bool,Nat0,Nat0 >< Nat0) ^2 |
+    |Picture + Picture >< ((Bool,Nat0,Nat0 >< Nat0) >< Ftree Float Float )^2 |
         \ar[u]^-{|id + id >< myana criaFRPic|}
 }
 \end{eqnarray*}
