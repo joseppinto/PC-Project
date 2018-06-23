@@ -1071,36 +1071,52 @@ resto da lista. Finalmente essa lista |[Bool]| é reduzida a um único
 |Bool| através de um catamorfismo que efetua a conjunção de todos os booleanos
 da lista.
 
-isto ta mal mas nao ha tempo :(((
 \begin{eqnarray*}
-\xymatrix@@C=6cm{
-    |Bool|
-&
-    |1 + Bool >< Bool|
-           \ar[l]_-{|either True e|}
-\\
-     |[Bool]|
-          \ar[u]_-{|(cataNat (either True e)|}
-          \ar[r]^-{|outList|}
-&
-     |1 + Bool >< [Bool]|
-           \ar[u]^{|id + id >< (cataNat (either true e))|}
-           \ar[l]^-{|either nil cons|}
-\\
-    |[MagicNo]|
-          \ar[u]_-{|(myana ((id + (split (not . el) p2)).outList))|}
-          \ar[r]^-{|outList|}
-&
-    |1 + MagicNo >< [MagicNo]|
-          \ar[u]^{|id + (not . el) >< (myana ((id + (split (not . el) p2)).outList))|}
-          \ar[l]^-{|either nil cons|}
-\\
+\xymatrix@@C=4cm{
     |Blockchain|
-          \ar[u]_-{|(cataNat (either (cons . split p1 nil) (cons . (p1 >< id))))|}
+           \ar[d]_-{|(cataNat (either (cons . split p1 nil) (cons . (p1 >< id))))|}
 &
     |Block + Block >< Blockchain|
-          \ar[u]^{|p1 + p1 >< (cataNat (either (cons . split p1 nil) (cons . (p1 >< id))))|}
-          \ar[l]_-{|inBlockchain = either Bc Bcs|}
+           \ar[d]^{|id + id >< (cataNat (either (cons . split p1 nil) (cons . (p1 >< id)))|}
+           \ar[l]_-{|inBlockchain = either Bc Bcs|}
+\\
+     |[MagicNo]|
+&
+     |Block + Block >< [MagicNo]|
+           \ar[l]^-{|(either (cons . split p1 nil) (cons . (p1 >< id)))|}
+}
+\end{eqnarray*}
+
+
+\begin{eqnarray*}
+\xymatrix@@C=4cm{
+    |[Bool]|
+&
+    |1 + MagicNo >< [Bool]|
+           \ar[l]_-{|inBlockchain = either Bc Bcs|}
+\\
+     |[MagicNo]|
+           \ar[u]^-{|(myana ((id + (split (not . el) p2)).outList))|}
+&
+     |1 + MagicNo >< [MagicNo]|
+           \ar[u]_-{|id + id >< (myana ((id + (split (not . el) p2)).outList))|}
+           \ar[l]_-{|(either nil cons)|}
+}
+\end{eqnarray*}
+
+\begin{eqnarray*}
+\xymatrix@@C=4cm{
+    |[Bool]|
+           \ar[d]_-{|(cataNat (either true e))|}
+&
+    |1 + Bool >< [Bool]|
+           \ar[d]^{|id + id >< (cataNat (either true e))|}
+           \ar[l]_-{|inBlockchain = either Bc Bcs|}
+\\
+     |Bool|
+&
+     |1 + Bool >< [Bool]|
+           \ar[l]^-{|(either true e)|}
 }
 \end{eqnarray*}
 
