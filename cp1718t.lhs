@@ -1,3 +1,4 @@
+
 \documentclass[a4paper]{article}
 \usepackage[a4paper,left=3cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry}
 \usepackage{palatino}
@@ -1200,7 +1201,7 @@ Diagrama 2d
 }
 \end{eqnarray*}
 
-Diagrama 2e
+Diagrama 4b
 \begin{eqnarray*}
 \xymatrix@@C=5cm{
     |QTree a|
@@ -1260,7 +1261,7 @@ Diagrama 2e
     |Ftree (Picture >< Nat0 Picture >< Nat0)|
         \ar[uu]_-{|cataNat singl,b |}
 &
-    |Picture >< Nat0 + (Picture >< Nat0) >< FTree (Picture >< Nat0) (Picture >< Nat0)|
+    |Picture >< Nat0 + (Picture >< Nat0) >< A |
         \ar[l]^-{|inFtree|}
         \ar[u]^-{|id + id >< (cataNat singl,b )|}
 \\
@@ -1286,6 +1287,11 @@ Diagrama 2e
 }
 \end{eqnarray*}
 
+\begin{eqnarray*}
+\xymatrix@@C=1cm{
+|where A = FTree (Picture >< Nat0) (Picture >< Nat0)|
+}
+\end{eqnarray*}
 
 \begin{code}
 
@@ -1633,7 +1639,7 @@ Diagrama da muB
 \begin{eqnarray*}
 \xymatrix@@C=6cm{
     |B(C)|
-    \ar[d]_-{|unB|}
+    \ar[d]_-{|muB|}
 &
     |B(B(A))|
            \ar[l]_-{|fmap unB|}
