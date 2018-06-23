@@ -1128,10 +1128,10 @@ Diagrama 2a
 \begin{eqnarray*}
 \xymatrix@@C=4cm{
     |QTree a|
-          \ar[r ]_-{|out|}
+          \ar[r ]_-{|outQTree|}
           \ar[d]^-{|cataNat (inQTree.((id >< swap) + rotateaux))|}
 &
-    |A >< (IN >< IN) + (QTree a ^4)|
+    |A >< (Nat0 >< Nat0) + (QTree a ^4)|
            \ar[d]^-{|id + id >< cataNat(inQTree.((id >< swap) + rotateaux))|}
 \\
      |QTree a|
@@ -1146,10 +1146,10 @@ Diagrama 2b
 \begin{eqnarray*}
 \xymatrix@@C=5cm{
     |QTree a|
-          \ar[r ]_-{|out|}
+          \ar[r ]_-{|outQTree|}
           \ar[d]^-{|cataNat (inQTree.node2p size id)|}
 &
-    |A >< (IN >< IN) + (QTree a ^4)|
+    |A >< (Nat0 >< Nat0) + (QTree a ^4)|
            \ar[d]^-{|id + id >< cataNat(inQTree.node2p size id|}
 \\
      |QTree a|
@@ -1167,15 +1167,15 @@ Diagrama 2c
 \begin{eqnarray*}
 \xymatrix@@C=4cm{
     |QTree a|
-          \ar[r ]_-{|out|}
+          \ar[r ]_-{|outQTree|}
           \ar[d]^-{|cataNat (inQTree.baseQTree invcor id)|}
 &
-    |A >< (IN >< IN) + (QTree a ^4)|
+    |PixelRGBA8 >< (Nat0 >< Nat0) + (QTree a ^4)|
            \ar[d]^-{|id + id >< cataNat(inQTree.baseQTree invcor id|}
 \\
      |QTree a|
 &
-     |A >< (Nat0 >< Nat0) + (QTree a ^4)|
+     |PixelRGBA8 >< (Nat0 >< Nat0) + (QTree a ^4)|
         \ar[l]^-{|inQTree.invcor id|}
 }
 \end{eqnarray*}
@@ -1185,8 +1185,8 @@ Diagrama 2d
 \xymatrix@@C=3cm{
     |QTree a|
 &
-    |A >< (IN >< IN) + (QTree a ^4)|
-           \ar[l]_-{|in|}
+    |A >< (Nat0 >< Nat0) + (QTree a ^4)|
+           \ar[l]_-{|inQTree|}
 \\
      |Nat0 >< QTree a|
             \ar[u]^-{}
@@ -1196,41 +1196,95 @@ Diagrama 2d
         \ar[u]^-{|id + id >< cataNat transfor|}
 \\
      |QTree a|
-        \ar[u]_-{|split depthQTree id|}
+        \ar[u]_-{| (m >< id). split depthQTree id  |}
 }
 \end{eqnarray*}
 
 Diagrama 2e
 \begin{eqnarray*}
-\xymatrix@@C=3cm{
+\xymatrix@@C=5cm{
     |QTree a|
-          \ar[r ]_-{|out|}
-          \ar[d]^-{|cataNat (inQTree.baseQTree f id)|}
+          \ar[r ]_-{|outQTree|}
+          \ar[dd]^-{|cataNat (inQTree.baseQTree f id)|}
 &
     |A >< (Nat0 >< Nat0) + (QTree a ^4)|
            \ar[d]^-{|id + id >< cataNat(inQTree.baseQTree f id|}
 \\
-     |QTree Bool|
-        \ar[d]^-{|cataNat (inQTree swapTreeLines)|}
-        \ar[dr]^-{|inQTree.baseQTree f id|}
 &
      |A >< (Nat0 >< Nat0) + (QTree Bool^4)|
-        \ar[l]_-{|inQTree.baseQTree f id|}
+        \ar[dl]^-(0.1){|inQTree.baseQTree f id|}
 \\
     |QTree Bool|
-        \ar[d]^-{|qt2bm|}
+        \ar[d]^-{|cataNat (inQTree swapTreeLines)|}
+        \ar[r]_-{|inQTree.baseQTree f id|}
 &
     |Bool >< (Nat0 >< Nat0) + (QTree Bool ^4)|
         \ar[d]^-{|id+id >< cataNat (in.QTree.swapTreeLines)|}
 \\
-    |Matrix Bool|
+    |QTree Bool|
+        \ar[d]^-{|qt2bm|}
 &
-    |QTree Bool >< (Nat0 >< Nat0) + QTree Bool^4|
-        \ar[ul]^-{inQTree.swapTreeLines}
+    | Bool >< (Nat0 >< Nat0) + QTree Bool^4|
+        \ar[l]^-{inQTree.swapTreeLines}
+\\
+    |Matrix Bool|
 }
 \end{eqnarray*}
 
 
+Diagrama 2e
+\begin{eqnarray*}
+\xymatrix@@C=1cm{
+    |(Picture*)*|
+&
+    |(Picture*)|
+    \ar[l]_-{|fmap (pictures)|}
+\\
+    |(Picture*)*|
+        \ar[u]_-{|loopAna|}
+&
+    |1 + Picture* >< (Picture)*|
+        \ar[l]^-{|[nil,cons]|}
+\\
+    |(Picture >< Nat0)*|
+        \ar[u]_-{|myana filterList|}
+        \ar[r]^-{|filterList|}
+&
+    |1 + Picture * >< (Picture >< Nat0)|
+        \ar[u]^-{|id + id >< myana filterList|}
+\\
+&
+    |(Picture >< Nat0) + ((Picture >< Nat0) >< (Picture >< Nat0))|
+        \ar[ul]^-{|[singl,b]|}
+\\
+    |Ftree (Picture >< Nat0 Picture >< Nat0)|
+        \ar[uu]_-{|cataNat singl,b |}
+&
+    |Picture >< Nat0 + (Picture >< Nat0) >< FTree (Picture >< Nat0) (Picture >< Nat0)|
+        \ar[l]^-{|inFtree|}
+        \ar[u]^-{|id + id >< (cataNat singl,b )|}
+\\
+    |Nat0 >< FTree Picture Picture|
+        \ar[u]_-{|myana(meteAlt)|}
+        \ar[r]^-{|meteAlt|}
+&
+    |Picture >< Nat0 + (Picture >< Nat0) >< (Nat0 >< FTree Picture Picture)|
+        \ar[u]^-{|id + id >< myana meteAlt|}
+\\
+    |Ftree Picture Picture|
+        \ar[u]_-{|split 0 id|}
+&
+    |Picture + Picture >< (FTree Picture Picture)^2|
+        \ar[l]^-{|inFTree|}
+\\
+    |(Bool,Nat0,Nat0 >< Nat0|)
+        \ar[u]_-{|myana criaFRPic|}
+        \ar[r]^-{|criaFRPic|}
+&
+    |Picture + Picture >< (Bool,Nat0,Nat0 >< Nat0) ^2 |
+        \ar[u]^-{|id + id >< myana criaFRPic|}
+}
+\end{eqnarray*}
 
 
 \begin{code}
