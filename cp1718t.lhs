@@ -998,18 +998,18 @@ de dados |Blockchain|) que percorre toda a estrutura de dados e concatena a
 lista de transações de cada |Block|.
 
 \begin{eqnarray*}
-\xymatrix@@C=3cm{
+\xymatrix@@C=4cm{
     |Blockchain|
-           \ar[d]_-{|allTransactions = (cataNat (g . (p2.p2 >< id)))|}
+           \ar[d]_-{|allTransactions = (cataNat g)|}
 &
     |Block + Block >< Blockchain|
-           \ar[d]^{|p2.p2 + p2.p2 >< allTransactions|}
+           \ar[d]^{|id + id >< allTransactions|}
            \ar[l]_-{|inBlockchain = either Bc Bcs|}
 \\
      |Transactions|
 &
-     |Transactions + Transactions >< Transactions|
-           \ar[l]^-{|g = either id conc|}
+     |Block + Block >< Transactions|
+           \ar[l]^-{|g = either (p2.p2) (conc . (p2.p2 >< id))|}
 }
 \end{eqnarray*}
 
@@ -1030,19 +1030,12 @@ transação ou simplesmente somando (ou subtraindo) o valor ao par
 
 \begin{eqnarray*}
 \xymatrix@@C=3cm{
-    |Blockchain|
-           \ar[d]_-{|allTransactions = (cataNat (g . (p2.p2 >< id)))|}
-&
-    |Block + Block >< Blockchain|
-           \ar[d]^{|p2.p2 + p2.p2 >< allTransactions|}
-           \ar[l]_-{|inBlockchain = either Bc Bcs|}
-\\
      |Transactions|
           \ar[d]_-{|(cataNat (either nil sT))|}
 &
      |1 + Transaction >< Transactions|
            \ar[d]^{|id + id >< (cataNat (either nil sT))|}
-           \ar[l]^-{|g = either id cons|}
+           \ar[l]^-{|(either nil cons)|}
 \\
     |Ledger|
 &
@@ -1078,12 +1071,13 @@ resto da lista. Finalmente essa lista |[Bool]| é reduzida a um único
 |Bool| através de um catamorfismo que efetua a conjunção de todos os booleanos
 da lista.
 
+isto ta mal mas nao ha tempo :(((
 \begin{eqnarray*}
 \xymatrix@@C=6cm{
     |Bool|
 &
     |1 + Bool >< Bool|
-           \ar[l]_-{|either True el|}
+           \ar[l]_-{|either True e|}
 \\
      |[Bool]|
           \ar[u]_-{|(cataNat (either True e)|}
