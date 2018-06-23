@@ -1132,196 +1132,6 @@ isValidMagicNr = pim . pam . pum
 \end{code}
 \subsection*{Problema 2}
 
-Diagrama 2a
-
-
-
-\begin{eqnarray*}
-\xymatrix@@C=4cm{
-    |QTree a|
-          \ar[r ]_-{|outQTree|}
-          \ar[d]^-{|cataNat (inQTree.((id >< swap) + rotateaux))|}
-&
-    |A >< (Nat0 >< Nat0) + (QTree a )^4|
-           \ar[d]^-{|id + id >< cataNat(inQTree.((id >< swap) + rotateaux))|}
-\\
-     |QTree a|
-&
-     |A >< (Nat0 >< Nat0) + (QTree a )^4|
-           \ar[l]^-{|inQTree.((id >< swap) + rotateaux)|}
-}
-\end{eqnarray*}
-
-Diagrama 2b
-
-\begin{eqnarray*}
-\xymatrix@@C=5cm{
-    |QTree a|
-          \ar[r ]_-{|outQTree|}
-          \ar[d]^-{|cataNat (inQTree.node2p size id)|}
-&
-    |A >< (Nat0 >< Nat0) + (QTree a )^4|
-           \ar[d]^-{|id + id >< cataNat(inQTree.node2p size id|}
-\\
-     |QTree a|
-&
-     |A >< (Nat0 >< Nat0) + (QTree a )^4|
-           \ar[l]^-{|inQTree.node2p size id|}
-}
-\end{eqnarray*}
-\begin{eqnarray*}
-size = (*tam) * (*tam)
-\end{eqnarray*}
-
-
-Diagrama 2c
-\begin{eqnarray*}
-\xymatrix@@C=4cm{
-    |QTree PixelRGBA8|
-          \ar[r ]_-{|outQTree|}
-          \ar[d]^-{|cataNat (inQTree.baseQTree invcor id)|}
-&
-    |PixelRGBA8 >< (Nat0 >< Nat0) + (QTree a )^4|
-           \ar[d]^-{|id + id >< cataNat(inQTree.baseQTree invcor id|}
-\\
-     |QTree PixelRGBA8|
-&
-     |PixelRGBA8 >< (Nat0 >< Nat0) + (QTree a )^4|
-        \ar[l]^-{|inQTree.invcor id|}
-}
-\end{eqnarray*}
-
-Diagrama 2d
-\begin{eqnarray*}
-\xymatrix@@C=3cm{
-    |QTree a|
-&
-    |A >< (Nat0 >< Nat0) + (QTree a )^4|
-           \ar[l]_-{|inQTree|}
-\\
-     |Nat0 >< QTree a|
-            \ar[u]_-{|myana transformaTree|}
-            \ar[r]^-{|transformaTree|}
-&
-     |A >< (Nat0 >< Nat0) + (Nat0 >< QTree a)^4 |
-        \ar[u]_-{|id + id >< myana transformaTree|}
-\\
-    |Nat0 >< QTree a|
-        \ar[u]_-{|(((either ((-n)) (const 0)).(>n)?) >< id)|}
-\\
-     |QTree a|
-        \ar[u]_-{| split depthQTree id  |}
-}
-\end{eqnarray*}
-
-Diagrama 2e
-\begin{eqnarray*}
-\xymatrix@@C=5cm{
-    |QTree a|
-          \ar[r ]_-{|outQTree|}
-          \ar[dd]^-{|cataNat (inQTree.baseQTree f id)|}
-&
-    |A >< (Nat0 >< Nat0) + (QTree a )^4|
-           \ar[d]^-{|id + id >< cataNat(inQTree.baseQTree f id|}
-\\
-&
-     |A >< (Nat0 >< Nat0) + (QTree Bool)^4|
-        \ar[dl]^-(0.1){|inQTree.baseQTree f id|}
-\\
-    |QTree Bool|
-        \ar[d]^-{|cataNat (inQTree . swapTreeLines)|}
-        \ar[r]_-{|outQTree|}
-&
-    |Bool >< (Nat0 >< Nat0) + (QTree Bool )^4|
-        \ar[d]^-{|id+id >< cataNat (inQTree.swapTreeLines)|}
-\\
-    |QTree Bool|
-        \ar[d]^-{|qt2bm|}
-&
-    | Bool >< (Nat0 >< Nat0) + (QTree Bool)^4|
-        \ar[l]^-{inQTree.swapTreeLines}
-\\
-    |Matrix Bool|
-}
-\end{eqnarray*}
-
-
-Diagrama 4b
-\begin{eqnarray*}
-\xymatrix@@C=1cm{
-    |(Picture*)*|
-\\
-    |(Picture*)*|
-    \ar[u]_-{|fmap (pictures)|}
-\\
-    |(Picture*)*|
-        \ar[u]_-{|loopAna|}
-&
-    |1 + Picture* >< (Picture*)*|
-        \ar[l]^-{|[nil,cons]|}
-\\
-    |(Picture >< Nat0)*|
-        \ar[u]_-{|myana filterList|}
-        \ar[r]^-{|filterList|}
-&
-    |1 + (Picture *) >< (Picture >< Nat0)*|
-        \ar[u]^-{|id + id >< myana filterList|}
-\\
-&
-    |(Picture >< Nat0) + ((Picture >< Nat0) >< (Picture >< Nat0)* )|
-        \ar[ul]^-{|[singl,b]|}
-\\
-    |A|
-        \ar[uu]_-{|cataNat (either singl b) |}
-&
-    |Picture >< Nat0 + (Picture >< Nat0) >< A^2 |
-        \ar[l]^-{|inFtree|}
-        \ar[u]^-{|id + id >< (cataNat (either singl b ) )|}
-\\
-    |Nat0 >< C|
-        \ar[u]_-{|myana(meteAlt)|}
-        \ar[r]^-{|meteAlt|}
-&
-    |Picture >< Nat0 + (Picture >< Nat0) >< (Nat0 >< C)^2|
-        \ar[u]^-{|id + id >< myana meteAlt|}
-\\
-    |C|
-        \ar[u]_-{|split (const 0) id|}
-&
-    |Picture + Picture >< (C)^2|
-        \ar[l]^-{|inFTree|}
-\\
-    |(Bool,Nat0,Nat0 >< Nat0) >< B|
-        \ar[u]_-{|myana criaFRPic|}
-        \ar[r]^-{|criaFRPic|}
-&
-    |Picture + Picture >< ((Bool,Nat0,Nat0 >< Nat0) >< B )^2 |
-        \ar[u]^-{|id + id >< myana criaFRPic|}
-}
-\end{eqnarray*}
-
-
-\xymatrix@@C=1cm{
-|b(a,(d,c)) = [a] ++ d ++ c |
-}
-\end{eqnarray*}
-
-\begin{eqnarray*}
-\xymatrix@@C=1cm{
-|A = FTree (Picture >< Nat0) (Picture >< Nat0)|
-}
-\end{eqnarray*}
-\begin{eqnarray*}
-\xymatrix@@C=1cm{
-|B = FTree Float Float|
-}
-\end{eqnarray*}
-\begin{eqnarray*}
-\xymatrix@@C=1cm{
-|C = FTree Picture Picture|
-}
-\end{eqnarray*}
-
 \begin{code}
 
 aux1 (a,(b,c)) = Cell a b c
@@ -1351,12 +1161,90 @@ rotateaux (a,(b,(c,d))) = (c,(a,(d,b)))
 
 rotateQTree = cataQTree (inQTree . ((id><swap) -|- rotateaux))
 
+\end{code}
+Diagrama rotateQTree
+
+
+
+\begin{eqnarray*}
+\xymatrix@@C=4cm{
+    |QTree a|
+          \ar[r ]_-{|outQTree|}
+          \ar[d]^-{|cataNat (inQTree.((id >< swap) + rotateaux))|}
+&
+    |A >< (Nat0 >< Nat0) + (QTree a )^4|
+           \ar[d]^-{|id + id >< cataNat(inQTree.((id >< swap) + rotateaux))|}
+\\
+     |QTree a|
+&
+     |A >< (Nat0 >< Nat0) + (QTree a )^4|
+           \ar[l]^-{|inQTree.((id >< swap) + rotateaux)|}
+}
+\end{eqnarray*}
+A função rotateQTree é resolvida recorrendo a um simples catamorfismo onde
+a função que, no caso de receber um Left, faz um swap do p2 do par recebido
+e, no caso de receber um Rigth, troca as Qtree a para a ordem devida.
+
+\begin{code}
+
 scaleQTree tam = cataQTree (inQTree . node2p size id) where size = (*tam)><(*tam)
+\end{code}
+
+
+Diagrama da scaleQTree
+
+\begin{eqnarray*}
+\xymatrix@@C=5cm{
+    |QTree a|
+          \ar[r ]_-{|outQTree|}
+          \ar[d]^-{|cataNat (inQTree.node2p size id)|}
+&
+    |A >< (Nat0 >< Nat0) + (QTree a )^4|
+           \ar[d]^-{|id + id >< cataNat(inQTree.node2p size id|}
+\\
+     |QTree a|
+&
+     |A >< (Nat0 >< Nat0) + (QTree a )^4|
+           \ar[l]^-{|inQTree.node2p size id|}
+}
+\end{eqnarray*}
+\begin{eqnarray*}
+size = (*tam) * (*tam)
+\end{eqnarray*}
+A função scaleQTree é resolvida multiplicando o size da Árvore recebida pela
+taxa de aumento. Para isto recorremos a um catamorfismo. O catamorfismo quando
+recebe um Left (a,(b,c)) multiplica ambos os valores da segunda componente
+pelo valor recebido.
+
+\begin{code}
 
 invcor (PixelRGBA8 a b c d) = PixelRGBA8 (255-a) (255-b) (255-c) d
 
 invertQTree = cataQTree (inQTree . baseQTree invcor id)
+\end{code}
 
+Diagrama da invertQTree
+\begin{eqnarray*}
+\xymatrix@@C=4cm{
+    |QTree PixelRGBA8|
+          \ar[r ]_-{|outQTree|}
+          \ar[d]^-{|cataNat (inQTree.baseQTree invcor id)|}
+&
+    |PixelRGBA8 >< (Nat0 >< Nat0) + (QTree a )^4|
+           \ar[d]^-{|id + id >< cataNat(inQTree.baseQTree invcor id|}
+\\
+     |QTree PixelRGBA8|
+&
+     |PixelRGBA8 >< (Nat0 >< Nat0) + (QTree a )^4|
+        \ar[l]^-{|inQTree.invcor id|}
+}
+\end{eqnarray*}
+
+A função invertQTree tem uma resolução semelhante às anteriores. Para a resolver
+bastou recorrer a um catamorfismo que, quando recebe um Left (a,(b,c)),
+aplica no p1 a função invcor que é responsável por inverter as cores.
+
+\begin{code}
 
 compressQTree n = anaQTree transformaTree . fl
                     where fl = (nn >< id) . split depthQTree id
@@ -1389,6 +1277,39 @@ maxsize :: QTree a -> (a,(Int,Int))
 maxsize = cataQTree (either id f)
        where f (a,(b,(c,d))) = mymax [a,b,c,d]
 
+\end{code}
+       Diagrama da compressQTree
+       \begin{eqnarray*}
+       \xymatrix@@C=3cm{
+           |QTree a|
+       &
+           |A >< (Nat0 >< Nat0) + (QTree a )^4|
+                  \ar[l]_-{|inQTree|}
+       \\
+            |Nat0 >< QTree a|
+                   \ar[u]_-{|myana transformaTree|}
+                   \ar[r]^-{|transformaTree|}
+       &
+            |A >< (Nat0 >< Nat0) + (Nat0 >< QTree a)^4 |
+               \ar[u]_-{|id + id >< myana transformaTree|}
+       \\
+           |Nat0 >< QTree a|
+               \ar[u]_-{|(((either ((-n)) (const 0)).(>n)?) >< id)|}
+       \\
+            |QTree a|
+               \ar[u]_-{| split depthQTree id  |}
+       }
+       \end{eqnarray*}
+
+       O problema da compressQTree fica resolvido cortando a árvore recebida e ficando esta com a
+       altura no fim igual a altura_inicial -  n_recebido. Para isto usamos um anamorfismo
+       que recebe um par com a altura máxima que a árvore pode ter e a árvore inicial.
+       A função invocada no anamorfismo no caso de receber um par (0,Block _ _ _ _) converte
+       o block em cell e produz um i1 do tipo da árvore. No caso da primeira componente
+       ser diferente de 0 a função produz um i2: um tuplo de pares com 4 entradas em que o p1 é o int com
+       a altura inicial e o p2 um das árvores do bloco.
+
+\begin{code}
 
 matrixtrns :: Matrix Bool -> Matrix Bool
 matrixtrns a = let (nrow,ncol) = split nrows ncols a
@@ -1406,6 +1327,44 @@ swapTreeLines = cond typecheck h id
 outlineQTree f = qt2bm . cataQTree (inQTree . swapTreeLines) . cataQTree (inQTree . baseQTree f id)
 
 \end{code}
+
+
+Diagrama da outlineQTree
+\begin{eqnarray*}
+\xymatrix@@C=5cm{
+    |QTree a|
+          \ar[r ]_-{|outQTree|}
+          \ar[dd]^-{|cataNat (inQTree.baseQTree f id)|}
+&
+    |A >< (Nat0 >< Nat0) + (QTree a )^4|
+           \ar[d]^-{|id + id >< cataNat(inQTree.baseQTree f id|}
+\\
+&
+     |A >< (Nat0 >< Nat0) + (QTree Bool)^4|
+        \ar[dl]^-(0.1){|inQTree.baseQTree f id|}
+\\
+    |QTree Bool|
+        \ar[d]^-{|cataNat (inQTree . swapTreeLines)|}
+        \ar[r]_-{|outQTree|}
+&
+    |Bool >< (Nat0 >< Nat0) + (QTree Bool )^4|
+        \ar[d]^-{|id+id >< cataNat (inQTree.swapTreeLines)|}
+\\
+    |QTree Bool|
+        \ar[d]^-{|qt2bm|}
+&
+    | Bool >< (Nat0 >< Nat0) + (QTree Bool)^4|
+        \ar[l]^-{inQTree.swapTreeLines}
+\\
+    |Matrix Bool|
+}
+\end{eqnarray*}
+
+A função outlineQTree executa dois catamorfismos. O primeiro transforma a QTree a numa
+QTree Bool segundo a função recebida e o segundo, quando recebe um tipo Left, converte o elemento
+na devida matrix, altera-a ficando o centro da matrix a False e as bordas a False. No fim
+é executada a qt2bm na última matrix.
+
 \subsection*{Problema 3}
 Com base na implementação descrita no enunciado, podemos perceber que a função
 |base| gera um túpulo com 4 elementos.
@@ -1558,23 +1517,6 @@ base k = (1, k + 1, 1, 1)
 loop (a, x, b, y) = (a*x, succ x, b*y, succ y)
 \end{code}
 \subsection*{Problema 4}
-
-Diagrama da 4a
-
-\begin{eqnarray*}
-\xymatrix@@C=6cm{
-    |FTree IR IR|
-&
-    |IR + IR >< (Ftree IR IR)^2|
-           \ar[l]_-{|either ftreeunit ftreeComp|}
-\\
-    |IR >< Nat0|
-            \ar[u]_-{|myana criaPitagoras |}
-            \ar[r]_-{|criaPitagoras|}
-&
-    |IR + IR >< (IR * Nat0)^2|
-          \ar[u]^{|id + id >< myana criaPitagoras|}
-}
 \end{eqnarray*}
 
 
@@ -1611,7 +1553,36 @@ criaPitagoras (a,b) = i2 (a,((a*razao,nb),(a*razao,nb))) where nb = pred b
 
 
 generatePTree = anaFTree criaPitagoras . initype
-             where initype = split (const 30.0) id
+        where initype = split (const 30.0) id
+
+\end{code}
+
+Diagrama da generatePTree
+\begin{eqnarray*}
+\xymatrix@@C=6cm{
+       |FTree IR IR|
+&
+       |IR + IR >< (Ftree IR IR)^2|
+            \ar[l]_-{|either ftreeunit ftreeComp|}
+\\
+        |IR >< Nat0|
+           \ar[u]_-{|myana criaPitagoras |}
+           \ar[r]_-{|criaPitagoras|}
+&
+        |IR + IR >< (IR * Nat0)^2|
+            \ar[u]^{|id + id >< myana criaPitagoras|}
+\\
+        |Nat0|
+            \ar[u]^{|initype|}
+}
+\end{eqnarray*}
+
+O problema relativo a gerar a árvore de pitagoras foi resolvido recorrendo a um anamorfismo que
+recebe um par Float >< Int em que o Int representa a altura que a árvore pode ter e o float o tamanho do quadrado.
+A função que é passada ao anamorfismo no caso de receber a componente do par responsável pela
+altura com o valor 0 produz um i1 com o valor da primeira componente. No caso de ser diferente de 0
+é criado um i2 (A,(b,b)) em que o A tem o valor da primeira componente e o B = (A*sqrt(2) / 2,altura -1)
+\begin{code}
 
 
 criaFRPic :: ((Bool,Float,(Float,Float)),FTree Float Float) -> Either Picture (Picture,(((Bool,Float,(Float,Float)),FTree Float Float),((Bool,Float,(Float,Float)),FTree Float Float)))
@@ -1653,6 +1624,92 @@ drawPTree = breadthFirst . anaList filterList . hyloFTree (either singl b) (mete
            b(a,(b,c)) = [a] ++ b ++ c
            k = anaFTree (criaFRPic) . initype
            initype a = ((False,0,(0,0)),a)
+
+
+\end{code}
+
+Diagrama da drawPTree
+           \begin{eqnarray*}
+           \xymatrix@@C=1cm{
+               |(Picture*)*|
+           \\
+               |(Picture*)*|
+               \ar[u]_-{|fmap (pictures)|}
+           \\
+               |(Picture*)*|
+                   \ar[u]_-{|loopAna|}
+           &
+               |1 + Picture* >< (Picture*)*|
+                   \ar[l]^-{|[nil,cons]|}
+           \\
+               |(Picture >< Nat0)*|
+                   \ar[u]_-{|myana filterList|}
+                   \ar[r]^-{|filterList|}
+           &
+               |1 + (Picture *) >< (Picture >< Nat0)*|
+                   \ar[u]^-{|id + id >< myana filterList|}
+           \\
+           &
+               |(Picture >< Nat0) + ((Picture >< Nat0) >< (Picture >< Nat0)* )|
+                   \ar[ul]^-{|[singl,b]|}
+           \\
+               |A|
+                   \ar[uu]_-{|cataNat (either singl b) |}
+           &
+               |Picture >< Nat0 + (Picture >< Nat0) >< A^2 |
+                   \ar[l]^-{|inFtree|}
+                   \ar[u]^-{|id + id >< (cataNat (either singl b ) )|}
+           \\
+               |Nat0 >< C|
+                   \ar[u]_-{|myana(meteAlt)|}
+                   \ar[r]^-{|meteAlt|}
+           &
+               |Picture >< Nat0 + (Picture >< Nat0) >< (Nat0 >< C)^2|
+                   \ar[u]^-{|id + id >< myana meteAlt|}
+           \\
+               |C|
+                   \ar[u]_-{|split (const 0) id|}
+           &
+               |Picture + Picture >< (C)^2|
+                   \ar[l]^-{|inFTree|}
+           \\
+               |(Bool,Nat0,Nat0 >< Nat0) >< B|
+                   \ar[u]_-{|myana criaFRPic|}
+                   \ar[r]^-{|criaFRPic|}
+           &
+               |Picture + Picture >< ((Bool,Nat0,Nat0 >< Nat0) >< B )^2 |
+                   \ar[u]^-{|id + id >< myana criaFRPic|}
+           }
+           \end{eqnarray*}
+
+
+           \xymatrix@@C=1cm{
+           |b(a,(d,c)) = [a] ++ d   ++ c |
+           }
+           \end{eqnarray*}
+
+           \begin{eqnarray*}
+           \xymatrix@@C=1cm{
+           |A = FTree (Picture >< Nat0) (Picture >< Nat0)|
+           }
+           \end{eqnarray*}
+           \begin{eqnarray*}
+           \xymatrix@@C=1cm{
+           |B = FTree Float Float|
+           }
+           \end{eqnarray*}
+           \begin{eqnarray*}
+           \xymatrix@@C=1cm{
+           |C = FTree Picture Picture|
+           }
+\end{eqnarray*}
+
+A função drawPTree pode ser partida em várias partes. Consiste em transformar a árvore inicial
+numa árvore de pictures onde as imagens já se encontram desenhadas e nos sítios certos do referencial.
+Seguidamente corremos um hylomorfismo que transforma uma árvore de pictures numa lista de (int,Picture) em que o int
+representa a ordem da árvore. Posteriormente, esta lista é transformada agrupando os valores da mesma ordem e juntando todas as imagens.
+
+\begin{code}
 
 main :: IO()
 main = do putStrLn ("Número de niveis da árvore?")

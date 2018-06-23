@@ -1,3 +1,4 @@
+
 \documentclass[a4paper]{article}
 \usepackage[a4paper,left=3cm,right=2cm,top=2.5cm,bottom=2.5cm]{geometry}
 \usepackage{palatino}
@@ -271,17 +272,17 @@
 %---------------------------------------------------------------------------
 
 \title{
-       	    Cálculo de Programas
+            Cálculo de Programas
 \\
-       	Trabalho Prático
+        Trabalho Prático
 \\
-       	MiEI+LCC --- 2017/18
+        MiEI+LCC --- 2017/18
 }
 
 \author{
-       	\dium
+        \dium
 \\
-       	Universidade do Minho
+        Universidade do Minho
 }
 
 
@@ -847,15 +848,15 @@ Esta questão aborda operações de processamento de imagens utilizando quadtree
 \section*{Problema 3}
 O cálculo das combinações de \ensuremath{\Varid{n}} \ensuremath{\Varid{k}}-a-\ensuremath{\Varid{k}},
 \begin{eqnarray}
-	\ensuremath{\Big(\vcenter{\xymatrix@R=1pt{\Varid{n}\\\Varid{k}}}\Big)\mathrel{=}\frac{{\Varid{n}!}}{{\Varid{k}!}\mathbin{*}{(\Varid{n}\mathbin{-}\Varid{k})!}}}
-	\label{eq:bin}
+  \ensuremath{\Big(\vcenter{\xymatrix@R=1pt{\Varid{n}\\\Varid{k}}}\Big)\mathrel{=}\frac{{\Varid{n}!}}{{\Varid{k}!}\mathbin{*}{(\Varid{n}\mathbin{-}\Varid{k})!}}}
+  \label{eq:bin}
 \end{eqnarray}
 envolve três factoriais. Recorrendo à \material{lei de recursividade múltipla} do cálculo
 de programas, é possível escrever o mesmo programa como um simples ciclo-for
 onde se fazem apenas multiplicações e somas. Para isso, começa-se por estruturar
 a definição dada da forma seguinte,
 \begin{eqnarray*}
-	\ensuremath{\Big(\vcenter{\xymatrix@R=1pt{\Varid{n}\\\Varid{k}}}\Big)\mathrel{=}\Varid{h}\;\Varid{k}\;(\Varid{n}\mathbin{-}\Varid{k})}
+  \ensuremath{\Big(\vcenter{\xymatrix@R=1pt{\Varid{n}\\\Varid{k}}}\Big)\mathrel{=}\Varid{h}\;\Varid{k}\;(\Varid{n}\mathbin{-}\Varid{k})}
 \end{eqnarray*}
 onde
 \begin{eqnarray*}
@@ -1037,7 +1038,7 @@ basta calcular
 \end{hscode}\resethooks
 onde \ensuremath{\Varid{bagOfMarbles}} é o saco de berlindes referido acima, obtendo-se:
 \begin{quote}\small
-	\text{\tt \char123{}~2~\char124{}\char45{}\char62{}~3~\char44{}~3~\char124{}\char45{}\char62{}~5~\char44{}~6~\char124{}\char45{}\char62{}~2~\char125{}}.
+  \text{\tt \char123{}~2~\char124{}\char45{}\char62{}~3~\char44{}~3~\char124{}\char45{}\char62{}~5~\char44{}~6~\char124{}\char45{}\char62{}~2~\char125{}}.
 \end{quote}
 %
 Mais ainda, se quisermos saber o total de berlindes em \ensuremath{\Varid{bagOfMarbles}} basta
@@ -1097,7 +1098,7 @@ Partindo da seguinte declaração de \ensuremath{\Conid{Bag}} como um functor e 
 \item
 Defina a função \ensuremath{\mu } (multiplicação do mónade \ensuremath{\Conid{Bag}}) e a função auxiliar
 \ensuremath{\Varid{singletonbag}}.
-\item	Verifique-as com os seguintes testes unitários:
+\item Verifique-as com os seguintes testes unitários:
 \begin{teste}
 Lei \ensuremath{\mu \comp \Varid{return}\mathrel{=}\Varid{id}}:
 \begin{hscode}\SaveRestoreHook
@@ -1139,8 +1140,8 @@ efeitos especiais em progra\-mação. Por exemplo, a biblioteca \Probability\
 oferece um mónade para abordar problemas de probabilidades. Nesta biblioteca,
 o conceito de distribuição estatística é captado pelo tipo
 \begin{eqnarray}
-	\ensuremath{\mathbf{newtype}\;\fun{Dist}\;\Varid{a}\mathrel{=}\Conid{D}\;\{\mskip1.5mu \Varid{unD}\mathbin{::}[\mskip1.5mu (\Varid{a},\Conid{ProbRep})\mskip1.5mu]\mskip1.5mu\}}
-	\label{eq:Dist}
+  \ensuremath{\mathbf{newtype}\;\fun{Dist}\;\Varid{a}\mathrel{=}\Conid{D}\;\{\mskip1.5mu \Varid{unD}\mathbin{::}[\mskip1.5mu (\Varid{a},\Conid{ProbRep})\mskip1.5mu]\mskip1.5mu\}}
+  \label{eq:Dist}
 \end{eqnarray}
 em que \ensuremath{\Conid{ProbRep}} é um real de \ensuremath{\mathrm{0}} a \ensuremath{\mathrm{1}}, equivalente a uma escala de \ensuremath{\mathrm{0}} a \ensuremath{\mathrm{100}\mathbin{/}}.
 
@@ -1330,18 +1331,18 @@ de dados \ensuremath{\Conid{Blockchain}}) que percorre toda a estrutura de dados
 lista de transações de cada \ensuremath{\Conid{Block}}.
 
 \begin{eqnarray*}
-\xymatrix@C=3cm{
+\xymatrix@C=4cm{
     \ensuremath{\Conid{Blockchain}}
-           \ar[d]_-{\ensuremath{\Varid{allTransactions}\mathrel{=}\cata{\Varid{g}\comp (\p2\comp \p2\times\Varid{id})}}}
+           \ar[d]_-{\ensuremath{\Varid{allTransactions}\mathrel{=}\cata{\Varid{g}}}}
 &
     \ensuremath{\Conid{Block}\mathbin{+}\Conid{Block}\times\Conid{Blockchain}}
-           \ar[d]^{\ensuremath{\p2\comp \p2\mathbin{+}\p2\comp \p2\times\Varid{allTransactions}}}
+           \ar[d]^{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\Varid{allTransactions}}}
            \ar[l]_-{\ensuremath{\Varid{inBlockchain}\mathrel{=}\alt{\Conid{Bc}}{\Conid{Bcs}}}}
 \\
      \ensuremath{\Conid{Transactions}}
 &
-     \ensuremath{\Conid{Transactions}\mathbin{+}\Conid{Transactions}\times\Conid{Transactions}}
-           \ar[l]^-{\ensuremath{\Varid{g}\mathrel{=}\alt{\Varid{id}}{\mathsf{conc}}}}
+     \ensuremath{\Conid{Block}\mathbin{+}\Conid{Block}\times\Conid{Transactions}}
+           \ar[l]^-{\ensuremath{\Varid{g}\mathrel{=}\alt{\p2\comp \p2}{\mathsf{conc}\comp (\p2\comp \p2\times\Varid{id})}}}
 }
 \end{eqnarray*}
 
@@ -1367,19 +1368,12 @@ transação ou simplesmente somando (ou subtraindo) o valor ao par
 
 \begin{eqnarray*}
 \xymatrix@C=3cm{
-    \ensuremath{\Conid{Blockchain}}
-           \ar[d]_-{\ensuremath{\Varid{allTransactions}\mathrel{=}\cata{\Varid{g}\comp (\p2\comp \p2\times\Varid{id})}}}
-&
-    \ensuremath{\Conid{Block}\mathbin{+}\Conid{Block}\times\Conid{Blockchain}}
-           \ar[d]^{\ensuremath{\p2\comp \p2\mathbin{+}\p2\comp \p2\times\Varid{allTransactions}}}
-           \ar[l]_-{\ensuremath{\Varid{inBlockchain}\mathrel{=}\alt{\Conid{Bc}}{\Conid{Bcs}}}}
-\\
      \ensuremath{\Conid{Transactions}}
           \ar[d]_-{\ensuremath{\cata{\alt{\Varid{nil}}{\Varid{sT}}}}}
 &
      \ensuremath{\mathrm{1}\mathbin{+}\Conid{Transaction}\times\Conid{Transactions}}
            \ar[d]^{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\cata{\alt{\Varid{nil}}{\Varid{sT}}}}}
-           \ar[l]^-{\ensuremath{\Varid{g}\mathrel{=}\alt{\Varid{id}}{\Varid{cons}}}}
+           \ar[l]^-{\ensuremath{\alt{\Varid{nil}}{\Varid{cons}}}}
 \\
     \ensuremath{\Conid{Ledger}}
 &
@@ -1430,34 +1424,51 @@ resto da lista. Finalmente essa lista \ensuremath{[\mskip1.5mu \Conid{Bool}\mski
 da lista.
 
 \begin{eqnarray*}
-\xymatrix@C=6cm{
-    \ensuremath{\Conid{Bool}}
-&
-    \ensuremath{\mathrm{1}\mathbin{+}\Conid{Bool}\times\Conid{Bool}}
-           \ar[l]_-{\ensuremath{\alt{\Conid{True}}{\Varid{el}}}}
-\\
-     \ensuremath{[\mskip1.5mu \Conid{Bool}\mskip1.5mu]}
-          \ar[u]_-{\ensuremath{\cata{\alt{\Conid{True}}{\Varid{e}}}}}
-          \ar[r]^-{\ensuremath{\Varid{outList}}}
-&
-     \ensuremath{\mathrm{1}\mathbin{+}\Conid{Bool}\times[\mskip1.5mu \Conid{Bool}\mskip1.5mu]}
-           \ar[u]^{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\cata{\alt{\Varid{true}}{\Varid{e}}}}}
-           \ar[l]^-{\ensuremath{\alt{\Varid{nil}}{\Varid{cons}}}}
-\\
-    \ensuremath{[\mskip1.5mu \Conid{MagicNo}\mskip1.5mu]}
-          \ar[u]_-{\ensuremath{\ana{(\Varid{id}\mathbin{+}\conj{\neg \comp \Varid{el}}{\p2})\comp \Varid{outList}}}}
-          \ar[r]^-{\ensuremath{\Varid{outList}}}
-&
-    \ensuremath{\mathrm{1}\mathbin{+}\Conid{MagicNo}\times[\mskip1.5mu \Conid{MagicNo}\mskip1.5mu]}
-          \ar[u]^{\ensuremath{\Varid{id}\mathbin{+}(\neg \comp \Varid{el})\times\ana{(\Varid{id}\mathbin{+}\conj{\neg \comp \Varid{el}}{\p2})\comp \Varid{outList}}}}
-          \ar[l]^-{\ensuremath{\alt{\Varid{nil}}{\Varid{cons}}}}
-\\
+\xymatrix@C=4cm{
     \ensuremath{\Conid{Blockchain}}
-          \ar[u]_-{\ensuremath{\cata{\alt{\Varid{cons}\comp \conj{\p1}{\Varid{nil}}}{\Varid{cons}\comp (\p1\times\Varid{id})}}}}
+           \ar[d]_-{\ensuremath{\cata{\alt{\Varid{cons}\comp \conj{\p1}{\Varid{nil}}}{\Varid{cons}\comp (\p1\times\Varid{id})}}}}
 &
     \ensuremath{\Conid{Block}\mathbin{+}\Conid{Block}\times\Conid{Blockchain}}
-          \ar[u]^{\ensuremath{\p1\mathbin{+}\p1\times\cata{\alt{\Varid{cons}\comp \conj{\p1}{\Varid{nil}}}{\Varid{cons}\comp (\p1\times\Varid{id})}}}}
-          \ar[l]_-{\ensuremath{\Varid{inBlockchain}\mathrel{=}\alt{\Conid{Bc}}{\Conid{Bcs}}}}
+           \ar[d]^{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\cata{\alt{\Varid{cons}\comp \conj{\p1}{\Varid{nil}}}{\Varid{cons}\comp (\p1\times\Varid{id})}}}}
+           \ar[l]_-{\ensuremath{\Varid{inBlockchain}\mathrel{=}\alt{\Conid{Bc}}{\Conid{Bcs}}}}
+\\
+     \ensuremath{[\mskip1.5mu \Conid{MagicNo}\mskip1.5mu]}
+&
+     \ensuremath{\Conid{Block}\mathbin{+}\Conid{Block}\times[\mskip1.5mu \Conid{MagicNo}\mskip1.5mu]}
+           \ar[l]^-{\ensuremath{\alt{\Varid{cons}\comp \conj{\p1}{\Varid{nil}}}{\Varid{cons}\comp (\p1\times\Varid{id})}}}
+}
+\end{eqnarray*}
+
+
+\begin{eqnarray*}
+\xymatrix@C=4cm{
+    \ensuremath{[\mskip1.5mu \Conid{Bool}\mskip1.5mu]}
+&
+    \ensuremath{\mathrm{1}\mathbin{+}\Conid{MagicNo}\times[\mskip1.5mu \Conid{Bool}\mskip1.5mu]}
+           \ar[l]_-{\ensuremath{\Varid{inBlockchain}\mathrel{=}\alt{\Conid{Bc}}{\Conid{Bcs}}}}
+\\
+     \ensuremath{[\mskip1.5mu \Conid{MagicNo}\mskip1.5mu]}
+           \ar[u]^-{\ensuremath{\ana{(\Varid{id}\mathbin{+}\conj{\neg \comp \Varid{el}}{\p2})\comp \Varid{outList}}}}
+&
+     \ensuremath{\mathrm{1}\mathbin{+}\Conid{MagicNo}\times[\mskip1.5mu \Conid{MagicNo}\mskip1.5mu]}
+           \ar[u]_-{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\ana{(\Varid{id}\mathbin{+}\conj{\neg \comp \Varid{el}}{\p2})\comp \Varid{outList}}}}
+           \ar[l]_-{\ensuremath{\alt{\Varid{nil}}{\Varid{cons}}}}
+}
+\end{eqnarray*}
+
+\begin{eqnarray*}
+\xymatrix@C=4cm{
+    \ensuremath{[\mskip1.5mu \Conid{Bool}\mskip1.5mu]}
+           \ar[d]_-{\ensuremath{\cata{\alt{\Varid{true}}{\Varid{e}}}}}
+&
+    \ensuremath{\mathrm{1}\mathbin{+}\Conid{Bool}\times[\mskip1.5mu \Conid{Bool}\mskip1.5mu]}
+           \ar[d]^{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\cata{\alt{\Varid{true}}{\Varid{e}}}}}
+           \ar[l]_-{\ensuremath{\Varid{inBlockchain}\mathrel{=}\alt{\Conid{Bc}}{\Conid{Bcs}}}}
+\\
+     \ensuremath{\Conid{Bool}}
+&
+     \ensuremath{\mathrm{1}\mathbin{+}\Conid{Bool}\times[\mskip1.5mu \Conid{Bool}\mskip1.5mu]}
+           \ar[l]^-{\ensuremath{\alt{\Varid{true}}{\Varid{e}}}}
 }
 \end{eqnarray*}
 
@@ -1490,38 +1501,28 @@ da lista.
 \begin{hscode}\SaveRestoreHook
 \column{B}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{5}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{8}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{11}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{14}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{16}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{17}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{19}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{20}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{21}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{23}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{27}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{30}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{40}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{aux1}\;(\Varid{a},(\Varid{b},\Varid{c}))\mathrel{=}\Conid{Cell}\;\Varid{a}\;\Varid{b}\;\Varid{c}{}\<[E]%
 \\
 \>[B]{}\Varid{aux2}\;(\Varid{a},(\Varid{b},(\Varid{c},\Varid{d})))\mathrel{=}\Conid{Block}\;\Varid{a}\;\Varid{b}\;\Varid{c}\;\Varid{d}{}\<[E]%
-\\
+\\[\blanklineskip]%
 \>[B]{}\Varid{inQTree}\mathrel{=}\alt{\Varid{aux1}}{\Varid{aux2}}{}\<[E]%
-\\
+\\[\blanklineskip]%
 \>[B]{}\Varid{outQTree}\;(\Conid{Cell}\;\Varid{a}\;\Varid{b}\;\Varid{c})\mathrel{=}i_1\;(\Varid{a},(\Varid{b},\Varid{c})){}\<[E]%
 \\
 \>[B]{}\Varid{outQTree}\;(\Conid{Block}\;\Varid{a}\;\Varid{b}\;\Varid{c}\;\Varid{d})\mathrel{=}i_2\;(\Varid{a},(\Varid{b},(\Varid{c},\Varid{d}))){}\<[E]%
-\\
+\\[\blanklineskip]%
 \>[B]{}\Varid{baseQTree}\;\Varid{g}\;\Varid{f}\mathrel{=}(\Varid{g}\times\Varid{id})+{}\<[30]%
 \>[30]{}(\Varid{f}\times(\Varid{f}\times(\Varid{f}\times\Varid{f}))){}\<[E]%
-\\
+\\[\blanklineskip]%
 \>[B]{}\Varid{recQTree}\;\Varid{f}\mathrel{=}\Varid{baseQTree}\;\Varid{id}\;\Varid{f}{}\<[E]%
-\\
+\\[\blanklineskip]%
 \>[B]{}\Varid{cataQTree}\;\Varid{g}\mathrel{=}\Varid{g}\comp (\Varid{recQTree}\;(\Varid{cataQTree}\;\Varid{g}))\comp \Varid{outQTree}{}\<[E]%
-\\
+\\[\blanklineskip]%
 \>[B]{}\Varid{anaQTree}\;\Varid{f}\mathrel{=}\Varid{inQTree}\comp (\Varid{recQTree}\;(\Varid{anaQTree}\;\Varid{f}))\comp \Varid{f}{}\<[E]%
-\\
+\\[\blanklineskip]%
 \>[B]{}\Varid{hyloQTree}\;\Varid{a}\;\Varid{c}\mathrel{=}\Varid{cataQTree}\;\Varid{a}\comp \Varid{anaQTree}\;\Varid{c}{}\<[E]%
 \\[\blanklineskip]%
 \>[B]{}\Varid{node2p}\;\Varid{g}\;\Varid{f}\mathrel{=}(\Varid{id}\times\Varid{g})+{}\<[27]%
@@ -1533,22 +1534,114 @@ da lista.
 \>[5]{}\mathsf{fmap}\;\Varid{f}\mathrel{=}\Varid{cataQTree}\;(\Varid{inQTree}\comp \Varid{baseQTree}\;\Varid{f}\;\Varid{id}){}\<[E]%
 \\[\blanklineskip]%
 \>[B]{}\Varid{rotateaux}\;(\Varid{a},(\Varid{b},(\Varid{c},\Varid{d})))\mathrel{=}(\Varid{c},(\Varid{a},(\Varid{d},\Varid{b}))){}\<[E]%
-\\
+\\[\blanklineskip]%
 \>[B]{}\Varid{rotateQTree}\mathrel{=}\Varid{cataQTree}\;(\Varid{inQTree}\comp ((\Varid{id}\times\Varid{swap})+\Varid{rotateaux})){}\<[E]%
-\\[\blanklineskip]%
-\>[B]{}\Varid{scaleQTree}\;\Varid{tam}\mathrel{=}\Varid{cataQTree}\;(\Varid{inQTree}\comp \Varid{node2p}\;\Varid{size}\;\Varid{id})\;\mathbf{where}\;\Varid{size}\mathrel{=}(\mathbin{*}\Varid{tam})\times(\mathbin{*}\Varid{tam}){}\<[E]%
-\\[\blanklineskip]%
-\>[B]{}\Varid{invcor}\;(\Conid{PixelRGBA8}\;\Varid{a}\;\Varid{b}\;\Varid{c}\;\Varid{d})\mathrel{=}\Conid{PixelRGBA8}\;(\mathrm{255}\mathbin{-}\Varid{a})\;(\mathrm{255}\mathbin{-}\Varid{b})\;(\mathrm{255}\mathbin{-}\Varid{c})\;\Varid{d}{}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+Diagrama rotateQTree
+
+
+
+\begin{eqnarray*}
+\xymatrix@C=4cm{
+    \ensuremath{\Conid{QTree}\;\Varid{a}}
+          \ar[r ]_-{\ensuremath{\Varid{outQTree}}}
+          \ar[d]^-{\ensuremath{\cata{\Varid{inQTree}\comp ((\Varid{id}\times\Varid{swap})\mathbin{+}\Varid{rotateaux})}}}
+&
+    \ensuremath{\Conid{A}\times(\N_0\times\N_0)\mathbin{+}(\Conid{QTree}\;\Varid{a})\mathbin{\uparrow}\mathrm{4}}
+           \ar[d]^-{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\cata{\Varid{inQTree}\comp ((\Varid{id}\times\Varid{swap})\mathbin{+}\Varid{rotateaux})}}}
 \\
-\>[B]{}\Varid{invertQTree}\mathrel{=}\Varid{cataQTree}\;(\Varid{inQTree}\comp \Varid{baseQTree}\;\Varid{invcor}\;\Varid{id}){}\<[E]%
+     \ensuremath{\Conid{QTree}\;\Varid{a}}
+&
+     \ensuremath{\Conid{A}\times(\N_0\times\N_0)\mathbin{+}(\Conid{QTree}\;\Varid{a})\mathbin{\uparrow}\mathrm{4}}
+           \ar[l]^-{\ensuremath{\Varid{inQTree}\comp ((\Varid{id}\times\Varid{swap})\mathbin{+}\Varid{rotateaux})}}
+}
+\end{eqnarray*}
+A função rotateQTree é resolvida recorrendo a um simples catamorfismo onde
+a função que, no caso de receber um Left, faz um swap do p2 do par recebido
+e, no caso de receber um Rigth, troca as Qtree a para a ordem devida.
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{scaleQTree}\;\Varid{tam}\mathrel{=}\Varid{cataQTree}\;(\Varid{inQTree}\comp \Varid{node2p}\;\Varid{size}\;\Varid{id})\;\mathbf{where}\;\Varid{size}\mathrel{=}(\mathbin{*}\Varid{tam})\times(\mathbin{*}\Varid{tam}){}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+
+
+Diagrama da scaleQTree
+
+\begin{eqnarray*}
+\xymatrix@C=5cm{
+    \ensuremath{\Conid{QTree}\;\Varid{a}}
+          \ar[r ]_-{\ensuremath{\Varid{outQTree}}}
+          \ar[d]^-{\ensuremath{\cata{\Varid{inQTree}\comp \Varid{node2p}\;\Varid{size}\;\Varid{id}}}}
+&
+    \ensuremath{\Conid{A}\times(\N_0\times\N_0)\mathbin{+}(\Conid{QTree}\;\Varid{a})\mathbin{\uparrow}\mathrm{4}}
+           \ar[d]^-{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\cata{\Varid{inQTree}\comp \Varid{node2p}\;\Varid{size}\;\Varid{id}}}}
+\\
+     \ensuremath{\Conid{QTree}\;\Varid{a}}
+&
+     \ensuremath{\Conid{A}\times(\N_0\times\N_0)\mathbin{+}(\Conid{QTree}\;\Varid{a})\mathbin{\uparrow}\mathrm{4}}
+           \ar[l]^-{\ensuremath{\Varid{inQTree}\comp \Varid{node2p}\;\Varid{size}\;\Varid{id}}}
+}
+\end{eqnarray*}
+\begin{eqnarray*}
+size = (*tam) * (*tam)
+\end{eqnarray*}
+A função scaleQTree é resolvida multiplicando o size da Árvore recebida pela
+taxa de aumento. Para isto recorremos a um catamorfismo. O catamorfismo quando
+recebe um Left (a,(b,c)) multiplica ambos os valores da segunda componente
+pelo valor recebido.
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{invcor}\;(\Conid{PixelRGBA8}\;\Varid{a}\;\Varid{b}\;\Varid{c}\;\Varid{d})\mathrel{=}\Conid{PixelRGBA8}\;(\mathrm{255}\mathbin{-}\Varid{a})\;(\mathrm{255}\mathbin{-}\Varid{b})\;(\mathrm{255}\mathbin{-}\Varid{c})\;\Varid{d}{}\<[E]%
 \\[\blanklineskip]%
-\>[B]{}\Varid{compressQTree}\;\Varid{n}\;\Varid{tree}\mathrel{=}\Varid{anaQTree}\;\Varid{transformaTree}\;(\Varid{nn}\;\Varid{n},\Varid{tree}){}\<[E]%
+\>[B]{}\Varid{invertQTree}\mathrel{=}\Varid{cataQTree}\;(\Varid{inQTree}\comp \Varid{baseQTree}\;\Varid{invcor}\;\Varid{id}){}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+
+Diagrama da invertQTree
+\begin{eqnarray*}
+\xymatrix@C=4cm{
+    \ensuremath{\Conid{QTree}\;\Conid{PixelRGBA8}}
+          \ar[r ]_-{\ensuremath{\Varid{outQTree}}}
+          \ar[d]^-{\ensuremath{\cata{\Varid{inQTree}\comp \Varid{baseQTree}\;\Varid{invcor}\;\Varid{id}}}}
+&
+    \ensuremath{\Conid{PixelRGBA8}\times(\N_0\times\N_0)\mathbin{+}(\Conid{QTree}\;\Varid{a})\mathbin{\uparrow}\mathrm{4}}
+           \ar[d]^-{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\cata{\Varid{inQTree}\comp \Varid{baseQTree}\;\Varid{invcor}\;\Varid{id}}}}
+\\
+     \ensuremath{\Conid{QTree}\;\Conid{PixelRGBA8}}
+&
+     \ensuremath{\Conid{PixelRGBA8}\times(\N_0\times\N_0)\mathbin{+}(\Conid{QTree}\;\Varid{a})\mathbin{\uparrow}\mathrm{4}}
+        \ar[l]^-{\ensuremath{\Varid{inQTree}\comp \Varid{invcor}\;\Varid{id}}}
+}
+\end{eqnarray*}
+
+A função invertQTree tem uma resolução semelhante às anteriores. Para a resolver
+bastou recorrer a um catamorfismo que, quando recebe um Left (a,(b,c)),
+aplica no p1 a função invcor que é responsável por inverter as cores.
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{8}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{11}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{17}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{19}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{21}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{23}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{27}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{40}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
+\>[B]{}\Varid{compressQTree}\;\Varid{n}\mathrel{=}\Varid{anaQTree}\;\Varid{transformaTree}\comp \Varid{fl}{}\<[E]%
 \\
 \>[B]{}\hsindent{21}{}\<[21]%
-\>[21]{}\mathbf{where}\;\Varid{h}\mathrel{=}\Varid{depthQTree}\;\Varid{tree}{}\<[E]%
+\>[21]{}\mathbf{where}\;\Varid{fl}\mathrel{=}(\Varid{nn}\times\Varid{id})\comp \conj{\Varid{depthQTree}}{\Varid{id}}{}\<[E]%
 \\
 \>[21]{}\hsindent{6}{}\<[27]%
-\>[27]{}\Varid{nn}\mathrel{=}\Varid{cond}\;(\mathbin{>}\Varid{h})\;\underline{\mathrm{0}}\;\underline{(\Varid{h}\mathbin{-}\Varid{n})}{}\<[E]%
+\>[27]{}\Varid{nn}\mathrel{=}\Varid{cond}\;(\mathbin{>}\Varid{n})\;((\mathbin{+})\;(\Varid{negate}\;\Varid{n}))\;\underline{\mathrm{0}}{}\<[E]%
 \\[\blanklineskip]%
 \>[B]{}\Varid{transformaTree}\mathbin{::}(\Conid{Int},\Conid{QTree}\;\Varid{a})\to (\Varid{a},(\Conid{Int},\Conid{Int}))+((\Conid{Int},\Conid{QTree}\;\Varid{a}),((\Conid{Int},\Conid{QTree}\;\Varid{a}),((\Conid{Int},\Conid{QTree}\;\Varid{a}),(\Conid{Int},\Conid{QTree}\;\Varid{a})))){}\<[E]%
 \\
@@ -1601,7 +1694,45 @@ da lista.
 \\
 \>[B]{}\hsindent{8}{}\<[8]%
 \>[8]{}\mathbf{where}\;\Varid{f}\;(\Varid{a},(\Varid{b},(\Varid{c},\Varid{d})))\mathrel{=}\Varid{mymax}\;[\mskip1.5mu \Varid{a},\Varid{b},\Varid{c},\Varid{d}\mskip1.5mu]{}\<[E]%
-\\[\blanklineskip]%
+\ColumnHook
+\end{hscode}\resethooks
+       Diagrama da compressQTree
+       \begin{eqnarray*}
+       \xymatrix@C=3cm{
+           \ensuremath{\Conid{QTree}\;\Varid{a}}
+       &
+           \ensuremath{\Conid{A}\times(\N_0\times\N_0)\mathbin{+}(\Conid{QTree}\;\Varid{a})\mathbin{\uparrow}\mathrm{4}}
+                  \ar[l]_-{\ensuremath{\Varid{inQTree}}}
+       \\
+            \ensuremath{\N_0\times\Conid{QTree}\;\Varid{a}}
+                   \ar[u]_-{\ensuremath{\ana{\Varid{transformaTree}}}}
+                   \ar[r]^-{\ensuremath{\Varid{transformaTree}}}
+       &
+            \ensuremath{\Conid{A}\times(\N_0\times\N_0)\mathbin{+}(\N_0\times\Conid{QTree}\;\Varid{a})\mathbin{\uparrow}\mathrm{4}}
+               \ar[u]_-{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\ana{\Varid{transformaTree}}}}
+       \\
+           \ensuremath{\N_0\times\Conid{QTree}\;\Varid{a}}
+               \ar[u]_-{\ensuremath{((\alt{(\mathbin{-}\Varid{n})}{\underline{\mathrm{0}}}\comp (\mathbin{>}\Varid{n})\mathbin{?})\times\Varid{id})}}
+       \\
+            \ensuremath{\Conid{QTree}\;\Varid{a}}
+               \ar[u]_-{\ensuremath{\conj{\Varid{depthQTree}}{\Varid{id}}}}
+       }
+       \end{eqnarray*}
+
+       O problema da compressQTree fica resolvido cortando a árvore recebida e ficando esta com a
+       altura no fim igual a altura_inicial -  n_recebido. Para isto usamos um anamorfismo
+       que recebe um par com a altura máxima que a árvore pode ter e a árvore inicial.
+       A função invocada no anamorfismo no caso de receber um par (0,Block _ _ _ _) converte
+       o block em cell e produz um i1 do tipo da árvore. No caso da primeira componente
+       ser diferente de 0 a função produz um i2: um tuplo de pares com 4 entradas em que o p1 é o int com
+       a altura inicial e o p2 um das árvores do bloco.
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{14}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{16}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{20}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{matrixtrns}\mathbin{::}\Conid{Matrix}\;\Conid{Bool}\to \Conid{Matrix}\;\Conid{Bool}{}\<[E]%
 \\
 \>[B]{}\Varid{matrixtrns}\;\Varid{a}\mathrel{=}\mathbf{let}\;(\Varid{nrow},\Varid{ncol})\mathrel{=}\conj{\Varid{nrows}}{\Varid{ncols}}\;\Varid{a}{}\<[E]%
@@ -1629,6 +1760,44 @@ da lista.
 \>[B]{}\Varid{outlineQTree}\;\Varid{f}\mathrel{=}\Varid{qt2bm}\comp \Varid{cataQTree}\;(\Varid{inQTree}\comp \Varid{swapTreeLines})\comp \Varid{cataQTree}\;(\Varid{inQTree}\comp \Varid{baseQTree}\;\Varid{f}\;\Varid{id}){}\<[E]%
 \ColumnHook
 \end{hscode}\resethooks
+
+
+Diagrama da outlineQTree
+\begin{eqnarray*}
+\xymatrix@C=5cm{
+    \ensuremath{\Conid{QTree}\;\Varid{a}}
+          \ar[r ]_-{\ensuremath{\Varid{outQTree}}}
+          \ar[dd]^-{\ensuremath{\cata{\Varid{inQTree}\comp \Varid{baseQTree}\;\Varid{f}\;\Varid{id}}}}
+&
+    \ensuremath{\Conid{A}\times(\N_0\times\N_0)\mathbin{+}(\Conid{QTree}\;\Varid{a})\mathbin{\uparrow}\mathrm{4}}
+           \ar[d]^-{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\cata{\Varid{inQTree}\comp \Varid{baseQTree}\;\Varid{f}\;\Varid{id}}}}
+\\
+&
+     \ensuremath{\Conid{A}\times(\N_0\times\N_0)\mathbin{+}(\Conid{QTree}\;\Conid{Bool})\mathbin{\uparrow}\mathrm{4}}
+        \ar[dl]^-(0.1){\ensuremath{\Varid{inQTree}\comp \Varid{baseQTree}\;\Varid{f}\;\Varid{id}}}
+\\
+    \ensuremath{\Conid{QTree}\;\Conid{Bool}}
+        \ar[d]^-{\ensuremath{\cata{\Varid{inQTree}\comp \Varid{swapTreeLines}}}}
+        \ar[r]_-{\ensuremath{\Varid{outQTree}}}
+&
+    \ensuremath{\Conid{Bool}\times(\N_0\times\N_0)\mathbin{+}(\Conid{QTree}\;\Conid{Bool})\mathbin{\uparrow}\mathrm{4}}
+        \ar[d]^-{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\cata{\Varid{inQTree}\comp \Varid{swapTreeLines}}}}
+\\
+    \ensuremath{\Conid{QTree}\;\Conid{Bool}}
+        \ar[d]^-{\ensuremath{\Varid{qt2bm}}}
+&
+    \ensuremath{\Conid{Bool}\times(\N_0\times\N_0)\mathbin{+}(\Conid{QTree}\;\Conid{Bool})\mathbin{\uparrow}\mathrm{4}}
+        \ar[l]^-{inQTree.swapTreeLines}
+\\
+    \ensuremath{\Conid{Matrix}\;\Conid{Bool}}
+}
+\end{eqnarray*}
+
+A função outlineQTree executa dois catamorfismos. O primeiro transforma a QTree a numa
+QTree Bool segundo a função recebida e o segundo, quando recebe um tipo Left, converte o elemento
+na devida matrix, altera-a ficando o centro da matrix a False e as bordas a False. No fim
+é executada a qt2bm na última matrix.
+
 \subsection*{Problema 3}
 Com base na implementação descrita no enunciado, podemos perceber que a função
 \ensuremath{\Varid{base}} gera um túpulo com 4 elementos.
@@ -1732,42 +1901,38 @@ um túpulo de 4 elementos, pelo que as funções são definidas de modo \ensurem
 \ColumnHook
 \end{hscode}\resethooks
 \subsection*{Problema 4}
+\end{eqnarray*}
+
+
 
 \begin{hscode}\SaveRestoreHook
 \column{B}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{5}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{6}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{9}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{11}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{12}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{14}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{15}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{17}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{18}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{23}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{30}{@{}>{\hspre}l<{\hspost}@{}}%
-\column{38}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{64}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{ftreeunit}\;\Varid{b}\mathrel{=}\Conid{Unit}\;\Varid{b}{}\<[E]%
-\\
+\\[\blanklineskip]%
 \>[B]{}\Varid{ftreeComp}\;(\Varid{a},(\Varid{b},\Varid{c}))\mathrel{=}\Conid{Comp}\;\Varid{a}\;\Varid{b}\;\Varid{c}{}\<[E]%
-\\
+\\[\blanklineskip]%
 \>[B]{}\Varid{inFTree}\mathrel{=}\alt{\Varid{ftreeunit}}{\Varid{ftreeComp}}{}\<[E]%
-\\
+\\[\blanklineskip]%
 \>[B]{}\Varid{outFTree}\;(\Conid{Unit}\;\Varid{b})\mathrel{=}i_1\;\Varid{b}{}\<[E]%
 \\
 \>[B]{}\Varid{outFTree}\;(\Conid{Comp}\;\Varid{a}\;\Varid{b}\;\Varid{c})\mathrel{=}i_2\;(\Varid{a},(\Varid{b},\Varid{c})){}\<[E]%
-\\
+\\[\blanklineskip]%
 \>[B]{}\Varid{baseFTree}\;\Varid{g}\;\Varid{f}\;\Varid{k}\mathrel{=}\Varid{f}+(\Varid{g}\times(\Varid{k}\times\Varid{k})){}\<[E]%
-\\
+\\[\blanklineskip]%
 \>[B]{}\Varid{recFTree}\;\Varid{f}\mathrel{=}\Varid{baseFTree}\;\Varid{id}\;\Varid{id}\;\Varid{f}{}\<[E]%
-\\
+\\[\blanklineskip]%
 \>[B]{}\Varid{cataFTree}\;\Varid{g}\mathrel{=}\Varid{g}\comp (\Varid{recFTree}\;{}\<[30]%
 \>[30]{}(\Varid{cataFTree}\;\Varid{g}))\comp \Varid{outFTree}{}\<[E]%
-\\
+\\[\blanklineskip]%
 \>[B]{}\Varid{anaFTree}\;{}\<[11]%
 \>[11]{}\Varid{f}\mathrel{=}\Varid{inFTree}\comp (\Varid{recFTree}\;(\Varid{anaFTree}\;\Varid{f}))\comp \Varid{f}{}\<[E]%
-\\
+\\[\blanklineskip]%
 \>[B]{}\Varid{hyloFTree}\;\Varid{a}\;\Varid{c}\mathrel{=}\Varid{cataFTree}\;\Varid{a}\comp \Varid{anaFTree}\;\Varid{c}{}\<[E]%
 \\[\blanklineskip]%
 \>[B]{}\mathbf{instance}\;\Conid{Bifunctor}\;\Conid{FTree}\;\mathbf{where}{}\<[E]%
@@ -1786,9 +1951,47 @@ um túpulo de 4 elementos, pelo que as funções são definidas de modo \ensurem
 \\[\blanklineskip]%
 \>[B]{}\Varid{generatePTree}\mathrel{=}\Varid{anaFTree}\;\Varid{criaPitagoras}\comp \Varid{initype}{}\<[E]%
 \\
-\>[B]{}\hsindent{14}{}\<[14]%
-\>[14]{}\mathbf{where}\;\Varid{initype}\mathrel{=}\conj{\underline{\mathrm{30.0}}}{\Varid{id}}{}\<[E]%
-\\[\blanklineskip]%
+\>[B]{}\hsindent{9}{}\<[9]%
+\>[9]{}\mathbf{where}\;\Varid{initype}\mathrel{=}\conj{\underline{\mathrm{30.0}}}{\Varid{id}}{}\<[E]%
+\ColumnHook
+\end{hscode}\resethooks
+
+Diagrama da generatePTree
+\begin{eqnarray*}
+\xymatrix@C=6cm{
+       \ensuremath{\Conid{FTree}\;\Conid{IR}\;\Conid{IR}}
+&
+       \ensuremath{\Conid{IR}\mathbin{+}\Conid{IR}\times(\Conid{Ftree}\;\Conid{IR}\;\Conid{IR})\mathbin{\uparrow}\mathrm{2}}
+            \ar[l]_-{\ensuremath{\alt{\Varid{ftreeunit}}{\Varid{ftreeComp}}}}
+\\
+        \ensuremath{\Conid{IR}\times\N_0}
+           \ar[u]_-{\ensuremath{\ana{\Varid{criaPitagoras}}}}
+           \ar[r]_-{\ensuremath{\Varid{criaPitagoras}}}
+&
+        \ensuremath{\Conid{IR}\mathbin{+}\Conid{IR}\times(\Conid{IR}\mathbin{*}\N_0)\mathbin{\uparrow}\mathrm{2}}
+            \ar[u]^{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\ana{\Varid{criaPitagoras}}}}
+\\
+        \ensuremath{\N_0}
+            \ar[u]^{\ensuremath{\Varid{initype}}}
+}
+\end{eqnarray*}
+
+O problema relativo a gerar a árvore de pitagoras foi resolvido recorrendo a um anamorfismo que
+recebe um par Float >< Int em que o Int representa a altura que a árvore pode ter e o float o tamanho do quadrado.
+A função que é passada ao anamorfismo no caso de receber a componente do par responsável pela
+altura com o valor 0 produz um i1 com o valor da primeira componente. No caso de ser diferente de 0
+é criado um i2 (A,(b,b)) em que o A tem o valor da primeira componente e o B = (A*sqrt(2) / 2,altura -1)
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{6}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{12}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{14}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{15}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{17}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{18}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{23}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{38}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{criaFRPic}\mathbin{::}((\Conid{Bool},\Conid{Float},(\Conid{Float},\Conid{Float})),\Conid{FTree}\;\Conid{Float}\;\Conid{Float})\to \Conid{Picture}+(\Conid{Picture},(((\Conid{Bool},\Conid{Float},(\Conid{Float},\Conid{Float})),\Conid{FTree}\;\Conid{Float}\;\Conid{Float}),((\Conid{Bool},\Conid{Float},(\Conid{Float},\Conid{Float})),\Conid{FTree}\;\Conid{Float}\;\Conid{Float}))){}\<[E]%
 \\
 \>[B]{}\Varid{criaFRPic}\;((\Varid{s},\Varid{a},(\Varid{x},\Varid{y})),\Conid{Unit}\;\Varid{b})\mathrel{=}i_1\;(\Varid{createImage}\;(\Varid{s},(\Varid{b},(\Varid{x},\Varid{y})))){}\<[E]%
@@ -1868,7 +2071,94 @@ um túpulo de 4 elementos, pelo que as funções são definidas de modo \ensurem
 \\
 \>[6]{}\hsindent{6}{}\<[12]%
 \>[12]{}\Varid{initype}\;\Varid{a}\mathrel{=}((\Conid{False},\mathrm{0},(\mathrm{0},\mathrm{0})),\Varid{a}){}\<[E]%
-\\[\blanklineskip]%
+\ColumnHook
+\end{hscode}\resethooks
+
+Diagrama da drawPTree
+           \begin{eqnarray*}
+           \xymatrix@C=1cm{
+               \ensuremath{(\Conid{Picture}\mathbin{*})\mathbin{*}}
+           \\
+               \ensuremath{(\Conid{Picture}\mathbin{*})\mathbin{*}}
+               \ar[u]_-{\ensuremath{\mathsf{fmap}\;(\Varid{pictures})}}
+           \\
+               \ensuremath{(\Conid{Picture}\mathbin{*})\mathbin{*}}
+                   \ar[u]_-{\ensuremath{\Varid{loopAna}}}
+           &
+               \ensuremath{\mathrm{1}\mathbin{+}\Conid{Picture}\mathbin{*}\times(\Conid{Picture}\mathbin{*})\mathbin{*}}
+                   \ar[l]^-{\ensuremath{[\mskip1.5mu \Varid{nil},\Varid{cons}\mskip1.5mu]}}
+           \\
+               \ensuremath{(\Conid{Picture}\times\N_0)\mathbin{*}}
+                   \ar[u]_-{\ensuremath{\ana{\Varid{filterList}}}}
+                   \ar[r]^-{\ensuremath{\Varid{filterList}}}
+           &
+               \ensuremath{\mathrm{1}\mathbin{+}(\Conid{Picture}\mathbin{*})\times(\Conid{Picture}\times\N_0)\mathbin{*}}
+                   \ar[u]^-{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\ana{\Varid{filterList}}}}
+           \\
+           &
+               \ensuremath{(\Conid{Picture}\times\N_0)\mathbin{+}((\Conid{Picture}\times\N_0)\times(\Conid{Picture}\times\N_0)\mathbin{*})}
+                   \ar[ul]^-{\ensuremath{[\mskip1.5mu \Varid{singl},\Varid{b}\mskip1.5mu]}}
+           \\
+               \ensuremath{\Conid{A}}
+                   \ar[uu]_-{\ensuremath{\cata{\alt{\Varid{singl}}{\Varid{b}}}}}
+           &
+               \ensuremath{\Conid{Picture}\times\N_0\mathbin{+}(\Conid{Picture}\times\N_0)\times\Conid{A}\mathbin{\uparrow}\mathrm{2}}
+                   \ar[l]^-{\ensuremath{\Varid{inFtree}}}
+                   \ar[u]^-{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\cata{\alt{\Varid{singl}}{\Varid{b}}}}}
+           \\
+               \ensuremath{\N_0\times\mathit C}
+                   \ar[u]_-{\ensuremath{\ana{\Varid{meteAlt}}}}
+                   \ar[r]^-{\ensuremath{\Varid{meteAlt}}}
+           &
+               \ensuremath{\Conid{Picture}\times\N_0\mathbin{+}(\Conid{Picture}\times\N_0)\times(\N_0\times\mathit C)\mathbin{\uparrow}\mathrm{2}}
+                   \ar[u]^-{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\ana{\Varid{meteAlt}}}}
+           \\
+               \ensuremath{\mathit C}
+                   \ar[u]_-{\ensuremath{\conj{\underline{\mathrm{0}}}{\Varid{id}}}}
+           &
+               \ensuremath{\Conid{Picture}\mathbin{+}\Conid{Picture}\times(\mathit C)\mathbin{\uparrow}\mathrm{2}}
+                   \ar[l]^-{\ensuremath{\Varid{inFTree}}}
+           \\
+               \ensuremath{(\Conid{Bool},\N_0,\N_0\times\N_0)\times\mathit B}
+                   \ar[u]_-{\ensuremath{\ana{\Varid{criaFRPic}}}}
+                   \ar[r]^-{\ensuremath{\Varid{criaFRPic}}}
+           &
+               \ensuremath{\Conid{Picture}\mathbin{+}\Conid{Picture}\times((\Conid{Bool},\N_0,\N_0\times\N_0)\times\mathit B)\mathbin{\uparrow}\mathrm{2}}
+                   \ar[u]^-{\ensuremath{\Varid{id}\mathbin{+}\Varid{id}\times\ana{\Varid{criaFRPic}}}}
+           }
+           \end{eqnarray*}
+
+
+           \xymatrix@C=1cm{
+           \ensuremath{\Varid{b}\;(\Varid{a},(\Varid{d},\Varid{c}))\mathrel{=}[\mskip1.5mu \Varid{a}\mskip1.5mu]\plus \Varid{d}\plus \Varid{c}}
+           }
+           \end{eqnarray*}
+
+           \begin{eqnarray*}
+           \xymatrix@C=1cm{
+           \ensuremath{\Conid{A}\mathrel{=}\Conid{FTree}\;(\Conid{Picture}\times\N_0)\;(\Conid{Picture}\times\N_0)}
+           }
+           \end{eqnarray*}
+           \begin{eqnarray*}
+           \xymatrix@C=1cm{
+           \ensuremath{\mathit B\mathrel{=}\Conid{FTree}\;\Conid{Float}\;\Conid{Float}}
+           }
+           \end{eqnarray*}
+           \begin{eqnarray*}
+           \xymatrix@C=1cm{
+           \ensuremath{\mathit C\mathrel{=}\Conid{FTree}\;\Conid{Picture}\;\Conid{Picture}}
+           }
+\end{eqnarray*}
+
+A função drawPTree pode ser partida em várias partes. Consiste em transformar a árvore inicial
+numa árvore de pictures onde as imagens já se encontram desenhadas e nos sítios certos do referencial.
+Seguidamente corremos um hylomorfismo que transforma uma árvore de pictures numa lista de (int,Picture) em que o int
+representa a ordem da árvore. Posteriormente, esta lista é transformada agrupando os valores da mesma ordem e juntando todas as imagens.
+
+\begin{hscode}\SaveRestoreHook
+\column{B}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{11}{@{}>{\hspre}l<{\hspost}@{}}%
+\column{E}{@{}>{\hspre}l<{\hspost}@{}}%
 \>[B]{}\Varid{main}\mathbin{::}\fun{IO}\;(){}\<[E]%
 \\
 \>[B]{}\Varid{main}\mathrel{=}\mathbf{do}\;\Varid{putStrLn}\;(\text{\tt \char34 Número~de~niveis~da~árvore?\char34}){}\<[E]%
@@ -1885,6 +2175,24 @@ um túpulo de 4 elementos, pelo que as funções são definidas de modo \ensurem
 \end{hscode}\resethooks
 \subsection*{Problema 5}
 
+Diagrama da muB
+
+\begin{eqnarray*}
+\xymatrix@C=6cm{
+    \ensuremath{\mathit B\;(\mathit C)}
+    \ar[d]_-{\ensuremath{\mu }}
+&
+    \ensuremath{\mathit B\;(\mathit B\;(\Conid{A}))}
+           \ar[l]_-{\ensuremath{\mathsf{fmap}\;\Varid{unB}}}
+       \ar[d]_-{\ensuremath{\Varid{\mathit B.juntaBag}\comp \Varid{unB}\comp \mathsf{fmap}\;\Varid{unB}}}
+\\
+     \ensuremath{\mathit C}
+          \ar[r]^-{\ensuremath{\Varid{\mathit B.juntaBag}}}
+&
+     \ensuremath{\mathit B\;(\Conid{A})}
+}
+\end{eqnarray*}
+
 \begin{hscode}\SaveRestoreHook
 \column{B}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{7}{@{}>{\hspre}l<{\hspost}@{}}%
@@ -1893,7 +2201,7 @@ um túpulo de 4 elementos, pelo que as funções são definidas de modo \ensurem
 \column{24}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{30}{@{}>{\hspre}l<{\hspost}@{}}%
 \column{E}{@{}>{\hspre}l<{\hspost}@{}}%
-\>[B]{}\Varid{singletonbag}\;\Varid{x}\mathrel{=}\mathit B\;[\mskip1.5mu (\Varid{x},\mathrm{1})\mskip1.5mu]{}\<[E]%
+\>[B]{}\Varid{singletonbag}\mathrel{=}\mathit B\comp \Varid{singl}\comp \conj{\Varid{id}}{\underline{\mathrm{1}}}{}\<[E]%
 \\[\blanklineskip]%
 \>[B]{}\mu \mathrel{=}\mathit B\comp \Varid{juntaBag}\comp \Varid{unB}\comp \mathsf{fmap}\;\Varid{unB}{}\<[E]%
 \\[\blanklineskip]%
@@ -1930,7 +2238,7 @@ um túpulo de 4 elementos, pelo que as funções são definidas de modo \ensurem
 Estudar o texto fonte deste trabalho para obter o efeito:\footnote{Exemplos tirados de \cite{Ol18}.}
 \begin{eqnarray*}
 \start
-	\ensuremath{\Varid{id}\mathrel{=}\conj{\Varid{f}}{\Varid{g}}}
+  \ensuremath{\Varid{id}\mathrel{=}\conj{\Varid{f}}{\Varid{g}}}
 %
 \just\equiv{ universal property }
 %
@@ -1959,6 +2267,8 @@ Os diagramas podem ser produzidos recorrendo à \emph{package} \LaTeX\
            \ar[l]^-{\ensuremath{\Varid{g}}}
 }
 \end{eqnarray*}
+
+
 
 %----------------- Fim do anexo com soluções dos alunos ------------------------%
 
