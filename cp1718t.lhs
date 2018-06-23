@@ -1250,62 +1250,75 @@ Diagrama 4b
 \begin{eqnarray*}
 \xymatrix@@C=1cm{
     |(Picture*)*|
-&
-    |(Picture*)|
-    \ar[l]_-{|fmap (pictures)|}
+\\
+    |(Picture*)*|
+    \ar[u]_-{|fmap (pictures)|}
 \\
     |(Picture*)*|
         \ar[u]_-{|loopAna|}
 &
-    |1 + Picture* >< (Picture)*|
+    |1 + Picture* >< (Picture*)*|
         \ar[l]^-{|[nil,cons]|}
 \\
     |(Picture >< Nat0)*|
         \ar[u]_-{|myana filterList|}
         \ar[r]^-{|filterList|}
 &
-    |1 + Picture * >< (Picture >< Nat0)|
+    |1 + (Picture *) >< (Picture >< Nat0)*|
         \ar[u]^-{|id + id >< myana filterList|}
 \\
 &
-    |(Picture >< Nat0) + ((Picture >< Nat0) >< (Picture >< Nat0))|
+    |(Picture >< Nat0) + ((Picture >< Nat0) >< (Picture >< Nat0)* )|
         \ar[ul]^-{|[singl,b]|}
 \\
-    |Ftree (Picture >< Nat0 Picture >< Nat0)|
-        \ar[uu]_-{|cataNat singl,b |}
+    |A|
+        \ar[uu]_-{|cataNat (either singl b) |}
 &
-    |Picture >< Nat0 + (Picture >< Nat0) >< A |
+    |Picture >< Nat0 + (Picture >< Nat0) >< A^2 |
         \ar[l]^-{|inFtree|}
-        \ar[u]^-{|id + id >< (cataNat singl,b )|}
+        \ar[u]^-{|id + id >< (cataNat (either singl b ) )|}
 \\
-    |Nat0 >< FTree Picture Picture|
+    |Nat0 >< C|
         \ar[u]_-{|myana(meteAlt)|}
         \ar[r]^-{|meteAlt|}
 &
-    |Picture >< Nat0 + (Picture >< Nat0) >< (Nat0 >< FTree Picture Picture)|
+    |Picture >< Nat0 + (Picture >< Nat0) >< (Nat0 >< C)^2|
         \ar[u]^-{|id + id >< myana meteAlt|}
 \\
-    |Ftree Picture Picture|
-        \ar[u]_-{|split 0 id|}
+    |C|
+        \ar[u]_-{|split (const 0) id|}
 &
-    |Picture + Picture >< (FTree Picture Picture)^2|
+    |Picture + Picture >< (C)^2|
         \ar[l]^-{|inFTree|}
 \\
-    |(Bool,Nat0,Nat0 >< Nat0|)
+    |(Bool,Nat0,Nat0 >< Nat0) >< B|
         \ar[u]_-{|myana criaFRPic|}
         \ar[r]^-{|criaFRPic|}
 &
-    |Picture + Picture >< ((Bool,Nat0,Nat0 >< Nat0) >< Ftree Float Float )^2 |
+    |Picture + Picture >< ((Bool,Nat0,Nat0 >< Nat0) >< B )^2 |
         \ar[u]^-{|id + id >< myana criaFRPic|}
+}
+\end{eqnarray*}
+
+
+\begin{eqnarray*}
+\xymatrix@@C=1cm{
+|where b(a,(b,c)) = [a] ++ b ++ c |
 }
 \end{eqnarray*}
 
 \begin{eqnarray*}
 \xymatrix@@C=1cm{
 |where A = FTree (Picture >< Nat0) (Picture >< Nat0)|
-\\
+}
+\end{eqnarray*}
+\begin{eqnarray*}
+\xymatrix@@C=1cm{
 |where B = FTree Float Float|
-\\
+}
+\end{eqnarray*}
+\begin{eqnarray*}
+\xymatrix@@C=1cm{
 |where C = FTree Picture Picture|
 }
 \end{eqnarray*}
