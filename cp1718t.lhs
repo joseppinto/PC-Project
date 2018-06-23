@@ -1157,6 +1157,11 @@ node2p g f = (id><g) -|-  (f >< (f >< (f >< f)))
 instance Functor QTree where
     fmap f = cataQTree (inQTree . baseQTree f id)
 
+\end{code}
+A função rotateQTree é resolvida recorrendo a um simples catamorfismo onde
+a função que, no caso de receber um Left, faz um swap do p2 do par recebido
+e, no caso de receber um Rigth, troca as Qtree a para a ordem devida.
+\begin{code}
 rotateaux (a,(b,(c,d))) = (c,(a,(d,b)))
 
 rotateQTree = cataQTree (inQTree . ((id><swap) -|- rotateaux))
@@ -1173,7 +1178,7 @@ Diagrama rotateQTree
           \ar[d]^-{|cataNat (inQTree.((id >< swap) + rotateaux))|}
 &
     |A >< (Nat0 >< Nat0) + (QTree a )^4|
-           \ar[d]^-{|id  >< cataNat(inQTree.((id >< swap) + rotateaux))|}
+           \ar[d]^-{|id  + cataNat(inQTree.((id >< swap) + rotateaux))|}
 \\
      |QTree a|
 &
@@ -1181,9 +1186,10 @@ Diagrama rotateQTree
            \ar[l]^-{|inQTree.((id >< swap) + rotateaux)|}
 }
 \end{eqnarray*}
-A função rotateQTree é resolvida recorrendo a um simples catamorfismo onde
-a função que, no caso de receber um Left, faz um swap do p2 do par recebido
-e, no caso de receber um Rigth, troca as Qtree a para a ordem devida.
+A função scaleQTree é resolvida multiplicando o size da Árvore recebida pela
+taxa de aumento. Para isto recorremos a um catamorfismo. O catamorfismo quando
+recebe um Left (a,(b,c)) multiplica ambos os valores da segunda componente
+pelo valor recebido.
 
 \begin{code}
 
@@ -1200,7 +1206,7 @@ Diagrama da scaleQTree
           \ar[d]^-{|cataNat (inQTree.node2p size id)|}
 &
     |A >< (Nat0 >< Nat0) + (QTree a )^4|
-           \ar[d]^-{|id  >< cataNat(inQTree.node2p size id|}
+           \ar[d]^-{|id  + cataNat(inQTree.node2p size id|}
 \\
      |QTree a|
 &
@@ -1211,10 +1217,11 @@ Diagrama da scaleQTree
 \begin{eqnarray*}
 size = (*tam) * (*tam)
 \end{eqnarray*}
-A função scaleQTree é resolvida multiplicando o size da Árvore recebida pela
-taxa de aumento. Para isto recorremos a um catamorfismo. O catamorfismo quando
-recebe um Left (a,(b,c)) multiplica ambos os valores da segunda componente
-pelo valor recebido.
+A função invertQTree tem uma resolução semelhante às anteriores. Para a resolver
+bastou recorrer a um catamorfismo que, quando recebe um Left (a,(b,c)),
+aplica no p1 a função invcor que é responsável por inverter as cores.
+
+
 
 \begin{code}
 
@@ -1231,7 +1238,7 @@ Diagrama da invertQTree
           \ar[d]^-{|cataNat (inQTree.baseQTree invcor id)|}
 &
     |PixelRGBA8 >< (Nat0 >< Nat0) + (QTree a )^4|
-           \ar[d]^-{|id >< cataNat(inQTree.baseQTree invcor id|}
+           \ar[d]^-{|id + cataNat(inQTree.baseQTree invcor id|}
 \\
      |QTree PixelRGBA8|
 &
@@ -1240,9 +1247,13 @@ Diagrama da invertQTree
 }
 \end{eqnarray*}
 
-A função invertQTree tem uma resolução semelhante às anteriores. Para a resolver
-bastou recorrer a um catamorfismo que, quando recebe um Left (a,(b,c)),
-aplica no p1 a função invcor que é responsável por inverter as cores.
+       O problema da compressQTree fica resolvido cortando a árvore recebida e ficando esta com a
+       altura no fim igual a altura_inicial -  n_recebido. Para isto usamos um anamorfismo
+       que recebe um par com a altura máxima que a árvore pode ter e a árvore inicial.
+       A função invocada no anamorfismo no caso de receber um par (0,Block _ _ _ _) converte
+       o block em cell e produz um i1 do tipo da árvore. No caso da primeira componente
+       ser diferente de 0 a função produz um i2: um tuplo de pares com 4 entradas em que o p1 é o int com
+       a altura inicial e o p2 um das árvores do bloco.
 
 \begin{code}
 
@@ -1291,7 +1302,7 @@ maxsize = cataQTree (either id f)
                    \ar[r]^-{|transformaTree|}
        &
             |A >< (Nat0 >< Nat0) + (Nat0 >< QTree a)^4 |
-               \ar[u]_-{|id  >< myana transformaTree|}
+               \ar[u]_-{|id  + myana transformaTree|}
        \\
            |Nat0 >< QTree a|
                \ar[u]_-{|(((either ((-n)) (const 0)).(>n)?) >< id)|}
@@ -1301,13 +1312,10 @@ maxsize = cataQTree (either id f)
        }
        \end{eqnarray*}
 
-       O problema da compressQTree fica resolvido cortando a árvore recebida e ficando esta com a
-       altura no fim igual a altura_inicial -  n_recebido. Para isto usamos um anamorfismo
-       que recebe um par com a altura máxima que a árvore pode ter e a árvore inicial.
-       A função invocada no anamorfismo no caso de receber um par (0,Block _ _ _ _) converte
-       o block em cell e produz um i1 do tipo da árvore. No caso da primeira componente
-       ser diferente de 0 a função produz um i2: um tuplo de pares com 4 entradas em que o p1 é o int com
-       a altura inicial e o p2 um das árvores do bloco.
+       A função outlineQTree executa dois catamorfismos. O primeiro transforma a QTree a numa
+       QTree Bool segundo a função recebida e o segundo, quando recebe um tipo Left, converte o elemento
+       na devida matrix, altera-a ficando o centro da matrix a False e as bordas a False. No fim
+       é executada a qt2bm na última matrix.
 
 \begin{code}
 
@@ -1337,7 +1345,7 @@ Diagrama da outlineQTree
           \ar[dd]^-{|cataNat (inQTree.baseQTree f id)|}
 &
     |A >< (Nat0 >< Nat0) + (QTree a )^4|
-           \ar[d]^-{|id  >< cataNat(inQTree.baseQTree f id|}
+           \ar[d]^-{|id  + cataNat(inQTree.baseQTree f id|}
 \\
 &
      |A >< (Nat0 >< Nat0) + (QTree Bool)^4|
@@ -1348,7 +1356,7 @@ Diagrama da outlineQTree
         \ar[r]_-{|outQTree|}
 &
     |Bool >< (Nat0 >< Nat0) + (QTree Bool )^4|
-        \ar[d]^-{|id >< cataNat (inQTree.swapTreeLines)|}
+        \ar[d]^-{|id + cataNat (inQTree.swapTreeLines)|}
 \\
     |QTree Bool|
         \ar[d]^-{|qt2bm|}
@@ -1359,11 +1367,6 @@ Diagrama da outlineQTree
     |Matrix Bool|
 }
 \end{eqnarray*}
-
-A função outlineQTree executa dois catamorfismos. O primeiro transforma a QTree a numa
-QTree Bool segundo a função recebida e o segundo, quando recebe um tipo Left, converte o elemento
-na devida matrix, altera-a ficando o centro da matrix a False e as bordas a False. No fim
-é executada a qt2bm na última matrix.
 
 \subsection*{Problema 3}
 Com base na implementação descrita no enunciado, podemos perceber que a função
@@ -1544,7 +1547,15 @@ hyloFTree a c = cataFTree a . anaFTree c
 
 instance Bifunctor FTree where
     bimap g f = cataFTree (inFTree . baseFTree g f id)
+\end{code}
 
+O problema relativo a gerar a árvore de pitagoras foi resolvido recorrendo a um anamorfismo que
+recebe um par Float >< Int em que o Int representa a altura que a árvore pode ter e o float o tamanho do quadrado.
+A função que é passada ao anamorfismo no caso de receber a componente do par responsável pela
+altura com o valor 0 produz um i1 com o valor da primeira componente. No caso de ser diferente de 0
+é criado um i2 (A,(b,b)) em que o A tem o valor da primeira componente e o B = (A*sqrt(2) / 2,altura -1)
+
+\begin{code}
 
 criaPitagoras :: (Square,Int) -> Either Square (Square,((Square,Int),(Square,Int)))
 criaPitagoras (a,0) = i1 (a)
@@ -1577,11 +1588,11 @@ Diagrama da generatePTree
 }
 \end{eqnarray*}
 
-O problema relativo a gerar a árvore de pitagoras foi resolvido recorrendo a um anamorfismo que
-recebe um par Float >< Int em que o Int representa a altura que a árvore pode ter e o float o tamanho do quadrado.
-A função que é passada ao anamorfismo no caso de receber a componente do par responsável pela
-altura com o valor 0 produz um i1 com o valor da primeira componente. No caso de ser diferente de 0
-é criado um i2 (A,(b,b)) em que o A tem o valor da primeira componente e o B = (A*sqrt(2) / 2,altura -1)
+A função drawPTree pode ser partida em várias partes. Consiste em transformar a árvore inicial
+numa árvore de pictures onde as imagens já se encontram desenhadas e nos sítios certos do referencial.
+Seguidamente corremos um hylomorfismo que transforma uma árvore de pictures numa lista de (int,Picture) em que o int
+representa a ordem da árvore. Posteriormente, esta lista é transformada agrupando os valores da mesma ordem e juntando todas as imagens.
+
 \begin{code}
 
 
@@ -1703,11 +1714,6 @@ Diagrama da drawPTree
            |C = FTree Picture Picture|
            }
 \end{eqnarray*}
-
-A função drawPTree pode ser partida em várias partes. Consiste em transformar a árvore inicial
-numa árvore de pictures onde as imagens já se encontram desenhadas e nos sítios certos do referencial.
-Seguidamente corremos um hylomorfismo que transforma uma árvore de pictures numa lista de (int,Picture) em que o int
-representa a ordem da árvore. Posteriormente, esta lista é transformada agrupando os valores da mesma ordem e juntando todas as imagens.
 
 \begin{code}
 
