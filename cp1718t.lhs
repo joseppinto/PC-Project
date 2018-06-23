@@ -1248,9 +1248,9 @@ Diagrama da invertQTree
 \end{eqnarray*}
 
        O problema da compressQTree fica resolvido cortando a árvore recebida e ficando esta com a
-       altura no fim igual a altura_inicial -  n_recebido. Para isto usamos um anamorfismo
+       altura no fim igual a altura inicial -  n recebido. Para isto usamos um anamorfismo
        que recebe um par com a altura máxima que a árvore pode ter e a árvore inicial.
-       A função invocada no anamorfismo no caso de receber um par (0,Block _ _ _ _) converte
+       A função invocada no anamorfismo no caso de receber um par (0,Block \_ \_ \_ \_) converte
        o block em cell e produz um i1 do tipo da árvore. No caso da primeira componente
        ser diferente de 0 a função produz um i2: um tuplo de pares com 4 entradas em que o p1 é o int com
        a altura inicial e o p2 um das árvores do bloco.
@@ -1550,7 +1550,7 @@ instance Bifunctor FTree where
 \end{code}
 
 O problema relativo a gerar a árvore de pitagoras foi resolvido recorrendo a um anamorfismo que
-recebe um par Float >< Int em que o Int representa a altura que a árvore pode ter e o float o tamanho do quadrado.
+recebe um par Float x Int em que o Int representa a altura que a árvore pode ter e o float o tamanho do quadrado.
 A função que é passada ao anamorfismo no caso de receber a componente do par responsável pela
 altura com o valor 0 produz um i1 com o valor da primeira componente. No caso de ser diferente de 0
 é criado um i2 (A,(b,b)) em que o A tem o valor da primeira componente e o B = (A*sqrt(2) / 2,altura -1)
@@ -1584,7 +1584,7 @@ Diagrama da generatePTree
             \ar[u]^{|id + id >< myana criaPitagoras|}
 \\
         |Nat0|
-            \ar[u]^{|initype|}
+            \ar[u]_{|split (const 30.0) id|}
 }
 \end{eqnarray*}
 
