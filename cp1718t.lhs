@@ -1142,12 +1142,12 @@ Diagrama 2a
           \ar[r ]_-{|outQTree|}
           \ar[d]^-{|cataNat (inQTree.((id >< swap) + rotateaux))|}
 &
-    |A >< (Nat0 >< Nat0) + (QTree a ^4)|
+    |A >< (Nat0 >< Nat0) + (QTree a )^4|
            \ar[d]^-{|id + id >< cataNat(inQTree.((id >< swap) + rotateaux))|}
 \\
      |QTree a|
 &
-     |A >< (Nat0 >< Nat0) + (QTree a ^4)|
+     |A >< (Nat0 >< Nat0) + (QTree a )^4|
            \ar[l]^-{|inQTree.((id >< swap) + rotateaux)|}
 }
 \end{eqnarray*}
@@ -1160,12 +1160,12 @@ Diagrama 2b
           \ar[r ]_-{|outQTree|}
           \ar[d]^-{|cataNat (inQTree.node2p size id)|}
 &
-    |A >< (Nat0 >< Nat0) + (QTree a ^4)|
+    |A >< (Nat0 >< Nat0) + (QTree a )^4|
            \ar[d]^-{|id + id >< cataNat(inQTree.node2p size id|}
 \\
      |QTree a|
 &
-     |A >< (Nat0 >< Nat0) + (QTree a ^4)|
+     |A >< (Nat0 >< Nat0) + (QTree a )^4|
            \ar[l]^-{|inQTree.node2p size id|}
 }
 \end{eqnarray*}
@@ -1177,16 +1177,16 @@ size = (*tam) * (*tam)
 Diagrama 2c
 \begin{eqnarray*}
 \xymatrix@@C=4cm{
-    |QTree a|
+    |QTree PixelRGBA8|
           \ar[r ]_-{|outQTree|}
           \ar[d]^-{|cataNat (inQTree.baseQTree invcor id)|}
 &
-    |PixelRGBA8 >< (Nat0 >< Nat0) + (QTree a ^4)|
+    |PixelRGBA8 >< (Nat0 >< Nat0) + (QTree a )^4|
            \ar[d]^-{|id + id >< cataNat(inQTree.baseQTree invcor id|}
 \\
-     |QTree a|
+     |QTree PixelRGBA8|
 &
-     |PixelRGBA8 >< (Nat0 >< Nat0) + (QTree a ^4)|
+     |PixelRGBA8 >< (Nat0 >< Nat0) + (QTree a )^4|
         \ar[l]^-{|inQTree.invcor id|}
 }
 \end{eqnarray*}
@@ -1196,46 +1196,49 @@ Diagrama 2d
 \xymatrix@@C=3cm{
     |QTree a|
 &
-    |A >< (Nat0 >< Nat0) + (QTree a ^4)|
+    |A >< (Nat0 >< Nat0) + (QTree a )^4|
            \ar[l]_-{|inQTree|}
 \\
      |Nat0 >< QTree a|
-            \ar[u]^-{}
+            \ar[u]_-{|myana transformaTree|}
             \ar[r]^-{|transformaTree|}
 &
-     |A >< (Nat0 >< Nat0) + (N >< QTree)^4 |
-        \ar[u]^-{|id + id >< cataNat transfor|}
+     |A >< (Nat0 >< Nat0) + (Nat0 >< QTree a)^4 |
+        \ar[u]_-{|id + id >< myana transformaTree|}
+\\
+    |Nat0 >< QTree a|
+        \ar[u]_-{|(((either ((-n)) (const 0)).(>n)?) >< id)|}
 \\
      |QTree a|
-        \ar[u]_-{| (m >< id). split depthQTree id  |}
+        \ar[u]_-{| split depthQTree id  |}
 }
 \end{eqnarray*}
 
-Diagrama 4b
+Diagrama 2e
 \begin{eqnarray*}
 \xymatrix@@C=5cm{
     |QTree a|
           \ar[r ]_-{|outQTree|}
           \ar[dd]^-{|cataNat (inQTree.baseQTree f id)|}
 &
-    |A >< (Nat0 >< Nat0) + (QTree a ^4)|
+    |A >< (Nat0 >< Nat0) + (QTree a )^4|
            \ar[d]^-{|id + id >< cataNat(inQTree.baseQTree f id|}
 \\
 &
-     |A >< (Nat0 >< Nat0) + (QTree Bool^4)|
+     |A >< (Nat0 >< Nat0) + (QTree Bool)^4|
         \ar[dl]^-(0.1){|inQTree.baseQTree f id|}
 \\
     |QTree Bool|
-        \ar[d]^-{|cataNat (inQTree swapTreeLines)|}
-        \ar[r]_-{|inQTree.baseQTree f id|}
+        \ar[d]^-{|cataNat (inQTree . swapTreeLines)|}
+        \ar[r]_-{|outQTree|}
 &
-    |Bool >< (Nat0 >< Nat0) + (QTree Bool ^4)|
-        \ar[d]^-{|id+id >< cataNat (in.QTree.swapTreeLines)|}
+    |Bool >< (Nat0 >< Nat0) + (QTree Bool )^4|
+        \ar[d]^-{|id+id >< cataNat (inQTree.swapTreeLines)|}
 \\
     |QTree Bool|
         \ar[d]^-{|qt2bm|}
 &
-    | Bool >< (Nat0 >< Nat0) + QTree Bool^4|
+    | Bool >< (Nat0 >< Nat0) + (QTree Bool)^4|
         \ar[l]^-{inQTree.swapTreeLines}
 \\
     |Matrix Bool|
@@ -1243,7 +1246,7 @@ Diagrama 4b
 \end{eqnarray*}
 
 
-Diagrama 2e
+Diagrama 4b
 \begin{eqnarray*}
 \xymatrix@@C=1cm{
     |(Picture*)*|
@@ -1292,7 +1295,7 @@ Diagrama 2e
         \ar[u]_-{|myana criaFRPic|}
         \ar[r]^-{|criaFRPic|}
 &
-    |Picture + Picture >< (Bool,Nat0,Nat0 >< Nat0) ^2 |
+    |Picture + Picture >< ((Bool,Nat0,Nat0 >< Nat0) >< Ftree Float Float )^2 |
         \ar[u]^-{|id + id >< myana criaFRPic|}
 }
 \end{eqnarray*}
@@ -1300,6 +1303,10 @@ Diagrama 2e
 \begin{eqnarray*}
 \xymatrix@@C=1cm{
 |where A = FTree (Picture >< Nat0) (Picture >< Nat0)|
+\\
+|where B = FTree Float Float|
+\\
+|where C = FTree Picture Picture|
 }
 \end{eqnarray*}
 
